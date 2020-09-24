@@ -7,7 +7,7 @@
       <button id="add_study_second" @click="study_second_up">up</button>
     </div>
     <div>
-      <p>專注時間 {{ Math.floor(study_time / 60) }} : {{ study_time % 60 }}</p>
+      <p class="pSettingTime">專注時間 {{ Math.floor(study_time / 60) }} : {{ study_time % 60 }}</p>
     </div>
     <div>
       <button id="Subtraction_study_minute" @click="study_minute_down">down</button>
@@ -20,7 +20,7 @@
       <button id="add_relax_second" @click="relax_second_up">up</button>
     </div>
     <div>
-      <p>休息時間 {{ Math.floor(relax_time / 60) }} : {{ relax_time % 60 }}</p>
+      <p class="pSettingTime">休息時間 {{ Math.floor(relax_time / 60) }} : {{ relax_time % 60 }}</p>
     </div>
     <div>
       <button id="Subtraction_relax_minute" @click="relax_minute_down">down</button>
@@ -73,3 +73,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.pSettingTime {
+  font-size: 24px;
+}
+</style>

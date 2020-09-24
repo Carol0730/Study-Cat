@@ -19,7 +19,10 @@
       <div class="tomato-container">
         <p class="p1">{{ Math.floor(timeRemaining / 60) }} : {{ timeRemaining % 60 }}</p>
         <img alt="tomato" src="./assets/Group 29.png" width="300" height="300">
-        <p>{{ total_tomato }}</p>
+        <p class="p2">{{ total_tomato }}</p>
+        <div>
+          <button class="buttonSetting" id="setting" @click="setting_window_click" v-show="text2!=='three'"><img src="./assets/Group 30.png" width="45px" height= "45px"></button>
+        </div>
       </div>
       <div>
         <button class="buttonStart button3" id="start&stop" @click="start_study">{{ start_text }}</button>
@@ -46,12 +49,12 @@
       <!--      <img src="./assets/S__983043.jpg" height="500" width="500"/>-->
     </div>
     <setting_time :text2="text2" :study_time.sync="study_time" :relax_time.sync="relax_time"/>
-    <div>
-      <button id="setting" @click="setting_window_click" v-show="text2!=='three'">setting</button>
-    </div>
-    <div>
-      <a href="https://www.youtube.com/?gl=TW&hl=zh-TW">This is a Link</a>
-    </div>
+<!--    <div>-->
+<!--      <button class="buttonSetting" id="setting" @click="setting_window_click" v-show="text2!=='three'"><img src="./assets/Group 30.png" width="45px" height= "45px"></button>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <a href="https://www.youtube.com/?gl=TW&hl=zh-TW">This is a Link</a>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -176,7 +179,7 @@ Vue.component('list',{
   width: fit-content;
   height: fit-content;
   font-weight: bold;
-  box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2), 0 0 0 0 rgba(0,0,0,0.19);
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2), 0 0 0 0 rgba(0,0,0,0.19);
 }
 .buttonStart {
   background-color: #FBE9C6;
@@ -192,24 +195,42 @@ Vue.component('list',{
   width: 100px;
   height: min-content;
   font-weight: bold;
-  box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2), 0 0 0 0 rgba(0,0,0,0.19);
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2), 0 0 0 0 rgba(0,0,0,0.19);
 }
-.button3 {border-radius: 8px;}
+.buttonSetting {
+  position: absolute;
+  left:calc(50% + 50px);
+  background: none;
+  border: none;
+  box-shadow: none;
+  display: inline-block;
+  margin: 4px 10px;
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+}
+.button3 {border-radius: 16px;}
 
 .tomato-container {
   position: relative;
 }
+
 .p1 {
   position:absolute;
   top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /*top: 500px;*/
-  /*left:400px;*/
   font-size: 36px;
   color: white;
 }
-
+.p2 {
+  position: absolute;
+  left: calc(50% + 118px);
+  bottom: -5px;
+  transform: translateX(-50%);
+  font-size: 18px;
+  color: white;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
