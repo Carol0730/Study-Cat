@@ -9,8 +9,12 @@
   },
   "dependencies": {
     "ant-design-vue": "^1.6.5",
+    "bootstrap": "^4.5.2",
+    "bootstrap-vue": "^2.17.3",
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "pug": "^3.0.0",
+    "pug-plain-loader": "^1.0.0",
+    "vue": "^2.6.12"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
