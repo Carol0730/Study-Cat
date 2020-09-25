@@ -30,7 +30,11 @@
     </div>
 <!--    任務-->
     <div v-show="text2==='one'">
-      <input type="text" id="new_subject" v-model=subject_name @keydown.enter="add_subject_into_list">
+      <span>
+        <input type="text" id="new_subject" v-model=subject_name @keydown.enter="add_subject_into_list">
+        <button @click="add_task">加入任務</button>
+      </span>
+
       <ul>
         <li v-for="(object,index) of sl" :key="index">
           <hr/>{{object.name}}<img style="text-align: center" alt="tomato" src="./assets/Group 24.png" width="30" height="30">{{object.count}}
@@ -141,12 +145,14 @@ export default {
       // this.option = document.createElement('option')
       // this.option.text = this.subject_name
       // this.select.add(this.option)
-      this.sl.push({
-        name: this.subject_name,
-        count: 0
-      })
-      // this.list_count++
-      this.subject_name = null
+      if(this.subject_name!==null) {
+        this.sl.push({
+          name: this.subject_name,
+          count: 0
+        })
+        // this.list_count++
+        this.subject_name = null
+      }
     },
     task_setting() {
       this.task_set = !(this.task_set)
@@ -172,6 +178,16 @@ export default {
           this.original_tomato_index = i
           this.total_tomato = this.sl[i].count
         }
+      }
+    },
+    add_task() {
+      if(this.subject_name!==null) {
+        this.sl.push({
+          name: this.subject_name,
+          count: 0
+        })
+        // this.list_count++
+        this.subject_name = null
       }
     }
   }
