@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <h1 style="text-align: center ">{{ text }}</h1>
-    <button id="task" @click="onLick">任務</button>
-    <button id="tomato" @click="onLick2">番茄鐘</button>
+    <p><img src="./assets/Group 26.png" width="208" height="61"></p>
+<!--    <h1 style="text-align: center ">{{ text }}</h1>-->
+    <button class="button button3" id="task" @click="onLick">任務</button>
+    <button class="button button3" id="tomato" @click="onLick2">番茄鐘</button>
     <br/>
     <br/>
     <div>
@@ -14,16 +15,20 @@
 
 
     <div v-show="text2==='two'">
-      <div>
-        <p>{{ Math.floor(timeRemaining / 60) }} : {{ timeRemaining % 60 }}</p>
-        <img alt="tomato" src="./assets/Group 25.png" width="300" height="300">
-        <p>{{ total_tomato }}</p>
+      <div class="tomato-container">
+        <p class="p1">{{ Math.floor(timeRemaining / 60) }} : {{ timeRemaining % 60 }}</p>
+        <img alt="tomato" src="./assets/Group 29.png" width="300" height="300">
+        <p class="p2">{{ total_tomato }}</p>
+        <div>
+          <button class="buttonSetting" id="setting" @click="setting_window_click" v-show="text2!=='three'"><img src="./assets/Group 30.png" width="45px" height= "45px"></button>
+        </div>
       </div>
       <div>
-        <button id="start&stop" @click="start_study">{{ start_text }}</button>
+        <button class="buttonStart button3" id="start&stop" @click="start_study">{{ start_text }}</button>
       </div>
       <!--      <img alt="Vue logo" src="./assets/logo.png">-->
     </div>
+<!--    任務-->
     <div v-show="text2==='one'">
       <input type="text" id="new_subject" v-model=subject_name @keydown.enter="add_subject_into_list">
       <ul>
@@ -42,9 +47,9 @@
 
     </div>
     <setting_time :text2="text2" :study_time.sync="study_time" :relax_time.sync="relax_time"/>
-    <div>
-      <button id="setting" @click="setting_window_click" v-show="text2!=='three'">setting</button>
-    </div>
+<!--    <div>-->
+<!--      <button class="buttonSetting" id="setting" @click="setting_window_click" v-show="text2!=='three'"><img src="./assets/Group 30.png" width="45px" height= "45px"></button>-->
+<!--    </div>-->
 <!--    <div>-->
 <!--      <a href="https://www.youtube.com/?gl=TW&hl=zh-TW">This is a Link</a>-->
 <!--    </div>-->
@@ -174,6 +179,70 @@ export default {
 </script>
 
 <style>
+.button {
+  background-color: #FBE9C6;
+  border: 2px solid #AB9872;
+  color: #76643E;
+  padding: 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 8px;
+  margin: 4px 10px;
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+  font-weight: bold;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2), 0 0 0 0 rgba(0,0,0,0.19);
+}
+.buttonStart {
+  background-color: #FBE9C6;
+  border: 2px solid #AB9872;
+  color: #DB5D2B;
+  padding: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  margin: 4px 10px;
+  cursor: pointer;
+  width: 100px;
+  height: min-content;
+  font-weight: bold;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2), 0 0 0 0 rgba(0,0,0,0.19);
+}
+.buttonSetting {
+  position: absolute;
+  left:calc(50% + 50px);
+  background: none;
+  border: none;
+  box-shadow: none;
+  display: inline-block;
+  margin: 4px 10px;
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+}
+.button3 {border-radius: 16px;}
+.tomato-container {
+  position: relative;
+}
+.p1 {
+  position:absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 36px;
+  color: white;
+}
+.p2 {
+  position: absolute;
+  left: calc(50% + 118px);
+  bottom: -5px;
+  transform: translateX(-50%);
+  font-size: 18px;
+  color: white;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -182,5 +251,4 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-
 </style>

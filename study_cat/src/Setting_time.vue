@@ -100,3 +100,30 @@ export default {
   cursor: pointer;
 }
 </style>
+
+<style>
+.pSettingTime {
+  font-size: 30px;
+}
+.buttonTimeSetting {
+  position:relative;
+  left:65px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  display: inline-block;
+  margin: 2px 4px;
+  cursor: pointer;
+}
+.buttonTimeSetting2 {
+  position:relative;
+  left:65px;
+  top:-25px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  display: inline-block;
+  margin: 2px 4px;
+  cursor: pointer;
+}
+</style>
