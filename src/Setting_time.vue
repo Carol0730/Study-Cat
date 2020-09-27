@@ -49,7 +49,6 @@ export default {
       if (this.study_time >= 60){
         this.$emit('update:study_time', this.study_time - 60 )
       }
-
     },
     study_second_down() {
       if (this.study_time >= 1)
@@ -69,10 +68,36 @@ export default {
       if (this.relax_time >= 1)
         this.$emit('update:relax_time', this.relax_time - 1 )
     }
-
   }
 }
 </script>
+
+<style>
+.pSettingTime {
+  font-size: 30px;
+}
+.buttonTimeSetting {
+  position:relative;
+  left:65px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  display: inline-block;
+  margin: 2px 4px;
+  cursor: pointer;
+}
+.buttonTimeSetting2 {
+  position:relative;
+  left:65px;
+  top:-25px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  display: inline-block;
+  margin: 2px 4px;
+  cursor: pointer;
+}
+</style>
 
 <style>
 .pSettingTime {

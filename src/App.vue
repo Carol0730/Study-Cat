@@ -1,20 +1,19 @@
 <template>
   <div id="app">
     <p><img src="./assets/Group 26.png" width="208" height="61"></p>
-<!--    <h1 style="text-align: center ">{{ text }}</h1>-->
+    <!--    <h1 style="text-align: center ">{{ text }}</h1>-->
     <button class="button button3" id="task" @click="onLick">任務</button>
     <button class="button button3" id="tomato" @click="onLick2">番茄鐘</button>
     <br/>
     <br/>
     <div>
-      <select id="subject_lists" style="background:palevioletred;color:white;font-size:20px;">
-        <!--   <option v-for="s of subject_lists" :key="s" value="1">英文單字7000</option>-->
-        <!--        <option value="2">微積分</option>-->
+      <select id="subject_lists" v-model=the_target style="background:palevioletred;color:white;font-size:20px;" @change="change_target">
+        <!--        <option v-for="(thing,index) of sl" :value="thing.name" :key="index"/>-->
+        <option v-for="(thing,index) of sl" :key="index">{{thing.name}}</option>
       </select>
     </div>
 
 
-<!--    番茄-->
     <div v-show="text2==='two'">
       <div class="tomato-container">
         <p class="p1">{{ Math.floor(timeRemaining / 60) }} : {{ timeRemaining % 60 }}</p>
@@ -29,32 +28,31 @@
       </div>
       <!--      <img alt="Vue logo" src="./assets/logo.png">-->
     </div>
-<!--    任務-->
-    <div v-show="text2==='one'">
+    <!--    任務-->
+    <div class="task" v-show="text2==='one'">
       <input type="text" id="new_subject" v-model=subject_name @keydown.enter="add_subject_into_list">
-<!--      <div>{{subject_name}}</div>-->
-<!--      <button id="subject_adding" @click="add_subject">add</button>-->
-<!--            <hr/>-->
-<!--            <span>-->
-<!--              <span style="text-align: center">英文單字7000</span>-->
-<!--              <img style="text-align: center" alt="tomato" src="./assets/Group 24.png" width="30" height="30">-->
-<!--              <span>{{ tomato }}</span>-->
-<!--            </span>-->
-<!--            <hr/>&lt;!&ndash;產生水平線 &ndash;&gt;-->
-      <list subjects = "英文單字7000" different_tomato = "0"></list>
-      <!--      <span style="text-align: left">微積分</span>-->
-      <!--      <img style="text-align: center" alt="tomato" src="./assets/Group 24.png" width="30" height="30">-->
-      <!--      <span>{{ tomato }}</span>-->
-      <!--      <hr/>-->
-      <!--      <img src="./assets/S__983043.jpg" height="500" width="500"/>-->
+      <ul>
+        <li v-for="(object,index) of sl" :key="index">
+          <hr/>{{object.name}}<img style="text-align: center" alt="tomato" src="./assets/Group 24.png" width="30" height="30">{{object.count}}
+          <span v-show="task_set===true"><button @click="change_number=index">修改</button><button @click="delete_task(index)">刪除</button></span>
+          <div v-show="change_number===index">
+            <input type="text" v-model=change_subject_name @keydown.enter="change_subject_name_in_list(index)">
+          </div>
+        </li>
+      </ul>
+      <hr/>
+      <button @click="task_setting">task_setting</button>
+      <br/>
+      <br/>
+
     </div>
     <setting_time :text2="text2" :study_time.sync="study_time" :relax_time.sync="relax_time"/>
-<!--    <div>-->
-<!--      <button class="buttonSetting" id="setting" @click="setting_window_click" v-show="text2!=='three'"><img src="./assets/Group 30.png" width="45px" height= "45px"></button>-->
-<!--    </div>-->
-<!--    <div>-->
-<!--      <a href="https://www.youtube.com/?gl=TW&hl=zh-TW">This is a Link</a>-->
-<!--    </div>-->
+    <!--    <div>-->
+    <!--      <button class="buttonSetting" id="setting" @click="setting_window_click" v-show="text2!=='three'"><img src="./assets/Group 30.png" width="45px" height= "45px"></button>-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <a href="https://www.youtube.com/?gl=TW&hl=zh-TW">This is a Link</a>-->
+    <!--    </div>-->
   </div>
 </template>
 
@@ -62,7 +60,6 @@
 // import HelloWorld from './components/HelloWorld.vue'
 
 import setting_time from "./Setting_time";
-import Vue from 'vue'
 
 export default {
   name: 'App',
@@ -72,7 +69,7 @@ export default {
   },
   data() {
     return {
-      start_text: 'START',
+      start_text: 'start',
       text: 'Study Cat',
       text2: 'one',
       timeRemaining: 10,
@@ -80,14 +77,20 @@ export default {
       study_time: 10,
       relax_time: 3,
       total_tomato: 0,
-      tomato: 0,
+      // tomato: 0,
       study_timer: null,
       relax_timer: null,
-      subject_lists: [],
+      // ],{ name： '任務名稱' , }
+      sl : [],
       list_count: 0,
       subject_name: null,
       select: null,
-      option: null
+      option: null,
+      task_set: false,
+      the_target: null,
+      change_subject_name: null,
+      change_number: false,
+      original_tomato_index: -1
     }
   },
   methods: {
@@ -121,8 +124,9 @@ export default {
         this.timeRemaining = this.relax_time
         clearInterval(this.study_timer)
         this.relax_timer = setInterval(this.relax_starting, 1000)
-        this.tomato += 1
+        // this.tomato += 1
         this.total_tomato += 1
+        this.sl[this.original_tomato_index].count = this.total_tomato
       }
     },
     relax_starting() {
@@ -132,36 +136,46 @@ export default {
         clearInterval(this.relax_timer)
       }
     },
-    // add_subject() {
-    //   this.subject_name = document.getElementById("new_subject").value
-    //   console.log(this.subject_name)
-    //   this.select = document.getElementById("subject_lists")
-    //   this.select.add(this.subject_name, this.list_count)
-    //   this.list_count++
-    // },
     add_subject_into_list() {
-      console.log(this.subject_name)
-      this.select = document.getElementById("subject_lists")
-      this.option = document.createElement('option')
-      this.option.text = this.subject_name
-      this.select.add(this.option, this.list_count)
-      this.subject_lists[this.count] = this.subject_name
-      this.list_count++
-
+      // this.select = document.getElementById("subject_lists")
+      // this.option = document.createElement('option')
+      // this.option.text = this.subject_name
+      // this.select.add(this.option)
+      this.sl.push({
+        name: this.subject_name,
+        count: 0
+      })
+      // this.list_count++
+      this.subject_name = null
+    },
+    task_setting() {
+      this.task_set = !(this.task_set)
+    },
+    delete_task(index) {
+      this.sl.splice(index,1)
+      console.log(index,this.sl)
+      this.task_set = false
+    },
+    change_subject_name_in_list(index) {
+      this.sl[index].name = this.change_subject_name
+      this.change_number = -1
+      this.task_set = false
+    },
+    change_target() {
+      console.log(this.the_target)
+      for(let i = 0; i<this.sl.length; i++)
+      {
+        if(this.sl[i].name ===  this.the_target)
+        {
+          if(this.original_tomato_index !== -1)
+            this.sl[this.original_tomato_index].count = this.total_tomato
+          this.original_tomato_index = i
+          this.total_tomato = this.sl[i].count
+        }
+      }
     }
-
   }
 }
-Vue.component('list',{
-  template:'<hr/><span><span>{{subjects}}</span><img style="text-align: center" alt="tomato" src="./assets/Group 24.png" width="30" height="30"><span>{{different_tomato}}</span></span>',
-  props:['subjects,different_tomato']
-})
-// var vm = new Vue({
-//   el: '#app',
-//   data :{
-//     currentView : 'list'
-//   }
-// })
 </script>
 
 <style>
@@ -210,11 +224,9 @@ Vue.component('list',{
   height: fit-content;
 }
 .button3 {border-radius: 16px;}
-
 .tomato-container {
   position: relative;
 }
-
 .p1 {
   position:absolute;
   top: 55%;
@@ -239,6 +251,4 @@ Vue.component('list',{
   color: #2c3e50;
   margin-top: 60px;
 }
-
-
 </style>
