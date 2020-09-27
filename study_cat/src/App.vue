@@ -4,31 +4,32 @@
       img(src="./assets/Group 26.png" width="208" height="61")
     p
       a-space
-        a-button(@click="section='tasks'") 任務
-        a-button(@click="section='pomodoro'") 番茄鐘
+        .button(@click="section='tasks'") 番茄鐘
+        .button(@click="section='pomodoro'") 任務
     pomodoro-timer(:projects.sync="projects" v-show="section==='tasks'")
     tasks-list(:projects.sync="projects" v-show="section==='pomodoro'")
 
 </template>
 
 <script>
-    import PomodoroTimer from "./PomodoroTimer";
-    import TasksList from "./TasksList";
+import PomodoroTimer from "./PomodoroTimer";
+import TasksList from "./TasksList";
 
-    export default {
+export default {
   name: 'App',
-    components: {TasksList, PomodoroTimer},
-    data(){
-      return{
-          section:'tasks',
-          projects:{},
-      }
+  components: {TasksList, PomodoroTimer},
+  data(){
+    return{
+      section:'tasks',
+      projects:{},
     }
+  }
 }
 </script>
 
 <style>
 .button {
+  border-radius: 16px;
   background-color: #FBE9C6;
   border: 2px solid #AB9872;
   color: #76643E;
@@ -45,6 +46,7 @@
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2), 0 0 0 0 rgba(0,0,0,0.19);
 }
 .buttonStart {
+  border-radius: 16px;
   background-color: #FBE9C6;
   border: 2px solid #AB9872;
   color: #DB5D2B;
@@ -72,15 +74,13 @@
   width: fit-content;
   height: fit-content;
 }
-.button3 {border-radius: 16px;}
-
 .tomato-container {
   position: relative;
 }
 
 .p1 {
   position:absolute;
-  top: 55%;
+  top: -650%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 36px;
@@ -89,7 +89,7 @@
 .p2 {
   position: absolute;
   left: calc(50% + 118px);
-  bottom: -5px;
+  bottom: 50px;
   transform: translateX(-50%);
   font-size: 18px;
   color: white;
