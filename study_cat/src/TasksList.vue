@@ -14,7 +14,7 @@
 
 
     p
-      .input(v-model="newProjectName" placeholder="想新增什麼科目呢？" @keyup.enter="addProjects")
+      input.input(v-model="newProjectName" placeholder="想新增什麼科目呢？" @keyup.enter="addProjects")
       a-button(@click="addProjects" icon="plus" shape="circle")
 </template>
 <script>
