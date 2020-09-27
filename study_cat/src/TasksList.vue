@@ -10,7 +10,7 @@
           a-button(@click="setEditingProjects(item)") 修改
           a-button(@click="deleteProject(item)") 刪除
         p(v-else)
-          a-button(@click="commitEdit") 完成
+          button.button(@click="commitEdit") 完成
 
 
     p
