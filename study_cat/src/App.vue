@@ -14,7 +14,6 @@
 <script>
 import PomodoroTimer from "./PomodoroTimer";
 import TasksList from "./TasksList";
-
 export default {
   name: 'App',
   components: {TasksList, PomodoroTimer},
@@ -77,7 +76,6 @@ export default {
 .tomato-container {
   position: relative;
 }
-
 .p1 {
   position:absolute;
   top: -650%;
@@ -102,6 +100,4 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-
-
 </style>

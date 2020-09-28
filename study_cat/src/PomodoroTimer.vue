@@ -11,10 +11,12 @@
         .p2 {{totalPomodoro}}
     p
       .buttonStart(@click="switchTimer") {{timerRunning ? 'PAUSE' : 'START'}}
+      .button(@click="submitt") 儲存
+      //.button(@click="section='setting_time'") 設定
+      //setting_time(:projects.sync="projects" v-show="section==='setting_time'")
 </template>
 <script>
 import Setting_time from "./Setting_time";
-
 export default {
   name: 'pomodoro-timer',
   components: {Setting_time},
@@ -59,7 +61,32 @@ export default {
       } else {
         clearInterval(this.timer)
       }
+    },
+      submitt(){
+        const data={
+          studytime: this.timeLeft,
+          relaxtime: this.relax_time,
+          subject: this.projects
+          //User
+          //學習時間
+          //休息時間
+          //科目
+          //對應番茄顆數
+        }
+        console.log(JSON.stringify(data))
+
+        fetch('https://cors-anywhere.herokuapp.com/https://script.google.com/macros/s/AKfycbyFou-FpZLBIQN5cASfPse1XfCtKcnTJaHh-raHf8b9f6OHyro1/exec',
+            {
+              method: "POST",
+              body: JSON.stringify(data),
+              headers: new Headers({
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              })
+            }).then(res => res.json())
+            .catch(error => console.error('Error: ', error))
+            .then(response => console.log('Success: ', response))
+      }
     }
-  }
 }
 </script>

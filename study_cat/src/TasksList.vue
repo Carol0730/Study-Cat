@@ -1,16 +1,16 @@
 <template lang="pug">
-  div
+  div.container
     a-list(:data-source="Object.values(projects)")
       a-list-item(slot="renderItem" slot-scope="item")
         a-list-item-meta
           div(slot="title")
-            a(v-if="editingProjectName!==item.name" ) {{item.name}}
+            p(v-if="editingProjectName!==item.name" ) {{item.name}}
             a-input(v-else v-model="editingProjectNewName" @keyup.enter="commitEdit") {{item.name}}
         p(v-if="editingProjectName!==item.name")
-          a-button(@click="setEditingProjects(item)") 修改
-          a-button(@click="deleteProject(item)") 刪除
+          button.buttonTaskSetting.buttonEdit(@click="setEditingProjects(item)") 修改
+          button.buttonTaskSetting.buttonDelete(@click="deleteProject(item)") 刪除
         p(v-else)
-          button.button(@click="commitEdit") 完成
+          button.buttonTaskSetting.buttonEdit(@click="commitEdit") 完成
 
 
     p
@@ -64,7 +64,12 @@ export default {
 </script>
 
 <style>
-
+.ant-input{
+  width: 580px;
+  border-radius: 10px;
+  padding: 16px 16px !important;
+  margin: 8px 0 !important;
+}
 .input,select {
   width: 40%;
   height: 15px;
@@ -75,7 +80,29 @@ export default {
   border-radius: 10px;
   box-sizing: border-box;
 }
+.buttonTaskSetting {
+  position: relative;
+  right:10%;
+  display: inline-block;
+  cursor: pointer;
+  width: 50px;
+  height: 30px;
+  border-radius: 10px;
+  color:white;
+  border: none;
+  padding: 5px;
+  margin: 2px 4px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2), 0 0 0 0 rgba(0,0,0,0.19);
+}
 
-
+.buttonEdit{
+  background-color:#7F9BD2;
+}
+.buttonDelete{
+  background-color:#EB8D8D;
+}
 
 </style>
