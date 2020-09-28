@@ -21,7 +21,7 @@
     data(){
       return{
           section:'tasks',
-          projects:{},
+          projects:{'無任務':{name:'無任務', pomodoro:0}},
       }
     }
 }

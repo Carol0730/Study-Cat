@@ -25,7 +25,7 @@
                 timeLeft: 3,
                 timerRunning: false,
                 timer: null,
-                currentProject: null
+                currentProject: '無任務'
             }
         },
         computed:{
