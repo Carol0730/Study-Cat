@@ -6,8 +6,8 @@
       a-space
         .button(@click="section='tasks'") 番茄鐘
         .button(@click="section='pomodoro'") 任務
-    pomodoro-timer(:projects.sync="projects" v-show="section==='tasks'")
-    tasks-list(:projects.sync="projects" v-show="section==='pomodoro'")
+    pomodoro-timer(:projects.sync="projects" v-if="section==='tasks'")
+    tasks-list(:projects.sync="projects" v-else-if="section==='pomodoro'")
 
 </template>
 

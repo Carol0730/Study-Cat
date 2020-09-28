@@ -1,10 +1,10 @@
 <template lang="pug">
-  div.container
-    div(v-for="item in Object.values(projects)")
-      a-space
-        div
-          span(v-if="editingProjectName!==item.name") {{item.name}}
-          input.input1(v-else v-model="editingProjectNewName" @keyup.enter="commitEdit")
+  div.container.d-flex.justify-content-center
+    div.w-100(style="max-width:400px")
+      div.d-flex.align-items-center(v-for="item in Object.values(projects)")
+        div.flex-grow-1
+          p.m-0.pl-3.text-left(v-if="editingProjectName!==item.name") {{item.name}}
+          input.input1.w-100(v-else v-model="editingProjectNewName" @keyup.enter="commitEdit")
         div(v-if="editingProjectName!==item.name")
           span {{item.pomodoro}}
           button.buttonEdit(@click="setEditingProjects(item)") 修改
@@ -12,10 +12,9 @@
         div(v-else)
           button.buttonEdit(@click="commitEdit") 完成
 
-
-    div
-      input.input(v-model="newProjectName" placeholder="想新增什麼科目呢？" @keyup.enter="addProjects")
-      button.buttonEdit(@click="addProjects" icon="plus" shape="circle") ＋
+      div.d-flex.align-items-center
+        input.input.flex-grow-1(v-model="newProjectName" placeholder="想新增什麼科目呢？" @keyup.enter="addProjects")
+        button.buttonEdit(@click="addProjects" icon="plus" shape="circle") ＋
 </template>
 <script>
 export default {
@@ -38,6 +37,7 @@ export default {
         pomodoro: 0,
       }
       this.$emit('update:projects', {...(this.projects), [projectName]: newProject})
+      this.newProjectName = ''
     },
     setEditingProjects(project) {
       if(this.editingProjectName){
@@ -87,7 +87,7 @@ export default {
 }
 
 .input {
-  width: 40%;
+  /*width: 40%;*/
   height: 15px;
   padding: 16px 16px;
   margin: 8px 0;
@@ -97,7 +97,7 @@ export default {
   box-sizing: border-box;
 }
 .input1 {
-  width: 40%;
+  /*width: 40%;*/
   height: 15px;
   padding: 16px 14px;
   margin: 8px 0;
