@@ -1,22 +1,28 @@
 <template lang="pug">
   div
     p
-      a-select.w-100.p-3(v-model="currentProject")
-        a-select-option(v-for="p in Object.values(projects)" :key="p.name" :value="p.name") {{p.name}}
+      a-select.w-50.p-3(v-model="currentProject")
+      a-select-option(v-for="p in Object.values(projects)" :key="p.name" :value="p.name") {{p.name}}
     p
       img(src="./assets/Group 29.png" width="300" height="300")
       .tomato-container
-        .p1 {{Math.floor(timeLeft / 60)}} : {{(timeLeft % 60)}}
-        p 這個專案的番茄數{{currentPomodoro}}
+        .p1 {{timerRunning ? Math.floor(timeLeft / 60) : workMinutes}} : {{(timerRunning?timeLeft % 60:0)}}
+        p(style="opacity:0") haha
+        //haha 不準刪
         .p2 {{totalPomodoro}}
+    div(v-show="editingTime")
+      a-slider(v-model="workMinutes" :max="60" :min="1")
     p
-      .buttonStart(@click="switchTimer") {{timerRunning ? 'PAUSE' : 'START'}}
+      .buttonStart(@click="switchTimer") {{timerRunning ? '放棄' : '開始！'}}
+    div
+      .button(@click="editingTime = !editingTime") {{editingTime ? '調整完成':'調整時間'}}
       .button(@click="submitt") 儲存
       //.button(@click="section='setting_time'") 設定
       //setting_time(:projects.sync="projects" v-show="section==='setting_time'")
 </template>
 <script>
 import Setting_time from "./Setting_time";
+
 export default {
   name: 'pomodoro-timer',
   components: {Setting_time},
@@ -28,15 +34,17 @@ export default {
       timeLeft: 3,
       timerRunning: false,
       timer: null,
-      currentProject: null
+      currentProject: null,
+      editingTime: false,
+      workMinutes: 25,
     }
   },
-  computed:{
-    totalPomodoro(){
-      return Object.values(this.projects).reduce((o,n) => o + n.pomodoro, 0)
+  computed: {
+    totalPomodoro() {
+      return Object.values(this.projects).reduce((o, n) => o + n.pomodoro, 0)
     },
-    currentPomodoro(){
-      const currentProject = this.projects[this.currentProject] ?? {pomodoro:0}
+    currentPomodoro() {
+      const currentProject = this.projects[this.currentProject] ?? {pomodoro: 0}
       return currentProject.pomodoro
     }
   },
@@ -45,12 +53,13 @@ export default {
       this.timerRunning = !(this.timerRunning)
       console.log("Switch Timer")
       if (this.timerRunning) {
+        this.timeLeft = this.workMinutes * 60
         this.timer = setInterval(() => {
           this.timeLeft -= 1
           console.log("Tick", this.timeLeft)
-          if(this.timeLeft < 0){
+          if (this.timeLeft < 0) {
             console.log("Stop Timer")
-            this.timeLeft = 3
+            this.timeLeft = this.workMinutes * 60
             clearInterval(this.timer)
             this.timerRunning = !(this.timerRunning)
             const newProjects = {...this.projects}
@@ -59,34 +68,35 @@ export default {
           }
         }, 1000)
       } else {
+        this.timeLeft = this.workMinutes * 60
         clearInterval(this.timer)
       }
     },
-      submitt(){
-        const data={
-          studytime: this.timeLeft,
-          relaxtime: this.relax_time,
-          subject: this.projects
-          //User
-          //學習時間
-          //休息時間
-          //科目
-          //對應番茄顆數
-        }
-        console.log(JSON.stringify(data))
-
-        fetch('https://cors-anywhere.herokuapp.com/https://script.google.com/macros/s/AKfycbyFou-FpZLBIQN5cASfPse1XfCtKcnTJaHh-raHf8b9f6OHyro1/exec',
-            {
-              method: "POST",
-              body: JSON.stringify(data),
-              headers: new Headers({
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-              })
-            }).then(res => res.json())
-            .catch(error => console.error('Error: ', error))
-            .then(response => console.log('Success: ', response))
+    submitt() {
+      const data = {
+        studytime: this.timeLeft,
+        relaxtime: this.relax_time,
+        subject: this.projects
+        //User
+        //學習時間
+        //休息時間
+        //科目
+        //對應番茄顆數
       }
+      console.log(JSON.stringify(data))
+
+      fetch('https://cors-anywhere.herokuapp.com/https://script.google.com/macros/s/AKfycbyFou-FpZLBIQN5cASfPse1XfCtKcnTJaHh-raHf8b9f6OHyro1/exec',
+          {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: new Headers({
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            })
+          }).then(res => res.json())
+          .catch(error => console.error('Error: ', error))
+          .then(response => console.log('Success: ', response))
     }
+  }
 }
 </script>
