@@ -18,7 +18,7 @@
       a-divider(type="vertical")
       a(@click="browsingDiscussStatus='solved'") 已解決
 
-    a-card(v-for="discuss in discusses" :key="discuss.toString()").w-100.p-3
+    a-card(v-for="discuss in discusses" :key="discuss.content + discuss.author").w-100.p-3
       a-space.main-content(align="start")
         a-space(direction="vertical")
           a-avatar
@@ -110,7 +110,7 @@ export default {
       this.sendingDiscussContent = ''
     },
     switchProject({key}){
-      this.currentProject = key
+      this.browsingSubject = key
     },
   }
 }
