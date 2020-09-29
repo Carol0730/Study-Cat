@@ -1,8 +1,10 @@
 <template lang="pug">
   div
-    p
-      a-select.w-50.p-3(v-model="currentProject")
-      a-select-option(v-for="p in Object.values(projects)" :key="p.name" :value="p.name") {{p.name}}
+    a-dropdown.w-50.p-3
+      a.ant-dropdown-link {{currentProject}}
+        a-icon(type="down")
+      a-menu(v-for="p in Object.values(projects)" :key="p.name"  slot="overlay")
+        a-menu-item(:value="p.name" @click="currentProject=p.name") {{p.name}}
     p
       img(src="./assets/Group 29.png" width="300" height="300")
       .tomato-container
@@ -34,7 +36,7 @@ export default {
       timeLeft: 3,
       timerRunning: false,
       timer: null,
-      currentProject: null,
+      currentProject: '無任務',
       editingTime: false,
       workMinutes: 25,
     }
