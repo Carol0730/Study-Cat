@@ -6,15 +6,14 @@
       a-space
         .button(@click="section='tasks'") 番茄鐘
         .button(@click="section='pomodoro'") 任務
-    pomodoro-timer(:projects.sync="projects" v-show="section==='tasks'")
-    tasks-list(:projects.sync="projects" v-show="section==='pomodoro'")
+    pomodoro-timer(:projects.sync="projects" v-if="section==='tasks'")
+    tasks-list(:projects.sync="projects" v-else-if="section==='pomodoro'")
 
 </template>
 
 <script>
 import PomodoroTimer from "./PomodoroTimer";
 import TasksList from "./TasksList";
-
 export default {
   name: 'App',
     components: {TasksList, PomodoroTimer},
@@ -76,7 +75,6 @@ export default {
 .tomato-container {
   position: relative;
 }
-
 .p1 {
   position:absolute;
   top: -650%;
@@ -101,6 +99,4 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-
-
 </style>
