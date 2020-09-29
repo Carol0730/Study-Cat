@@ -3,12 +3,12 @@
     a-dropdown.w-50.p-3
       a.ant-dropdown-link {{browsingSubject}}
         a-icon(type="down")
-      a-menu(v-for="p in Object.values(projects)" :key="p.name"  slot="overlay")
-        a-menu-item(:value="p.name" @click="browsingSubject=p.name") {{p.name}}
+      a-menu(slot="overlay")
+        a-menu-item(v-for="p in Object.values(projects)" :key="p.name" :value="p.name" @click="switchProject") {{p.name}}
 
     br
     br
-    a-space(align="begin")
+    a-space(align="start")
       a(@click="browsingDiscussStatus='all'")
         a-icon(type="star")
         |問題
@@ -19,7 +19,7 @@
       a(@click="browsingDiscussStatus='solved'") 已解決
 
     a-card(v-for="discuss in discusses" :key="discuss.toString()").w-100.p-3
-      a-space.main-content(align="begin")
+      a-space.main-content(align="start")
         a-space(direction="vertical")
           a-avatar
           span {{discuss.author}}
@@ -40,9 +40,10 @@
         a-card
           p {{comment.content}}
 
-    a-textarea( v-model="sendingDiscuss.content" placeholder="縮縮你的問題..." :autosize="true")
-    a-button(type="link" @click="discusses.push(sendingDiscuss)") 送出
+    a-textarea( v-model="sendingDiscussContent" placeholder="縮縮你的問題..." :autoSize="true")
+    a-button(type="link" @click="addDiscuss") 送出問題
       a-icon(type="up")
+
 
 
 </template>
@@ -55,15 +56,7 @@ export default {
   },
   data() {
     return {
-      sendingDiscuss:{
-        content: '',
-        status:'unsolved',
-        time: '2020',
-        author: this.user.name,
-        star: [],
-        comments: [
-        ]
-      },
+      sendingDiscussContent:'',
       browsingSubject: '無任務',
       browsingDiscussStatus: 'all',
       subjectDiscuss: {
@@ -103,7 +96,22 @@ export default {
       }else{
         discuss.star.push(this.user.name)
       }
-    }
+    },
+    addDiscuss(){
+      this.discusses.push({
+        content: this.sendingDiscussContent,
+            status:'unsolved',
+            time: '2020',
+            author: this.user.name,
+            star: [],
+            comments: [
+        ]
+      })
+      this.sendingDiscussContent = ''
+    },
+    switchProject({key}){
+      this.currentProject = key
+    },
   }
 }
 </script>

@@ -3,8 +3,8 @@
     a-dropdown.w-50.p-3
       a.ant-dropdown-link {{currentProject}}
         a-icon(type="down")
-      a-menu(v-for="p in Object.values(projects)" :key="p.name"  slot="overlay")
-        a-menu-item(:value="p.name" @click="currentProject=p.name") {{p.name}}
+      a-menu(slot="overlay")
+        a-menu-item(v-for="p in Object.values(projects)" :key="p.name" :value="p.name" @click="switchProject") {{p.name}}
     p
       img(src="./assets/Group 29.png" width="300" height="300")
       .tomato-container
@@ -73,6 +73,9 @@ export default {
         this.timeLeft = this.workMinutes * 60
         clearInterval(this.timer)
       }
+    },
+    switchProject({key}){
+      this.currentProject = key
     },
     submitt() {
       const data = {

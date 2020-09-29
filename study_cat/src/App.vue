@@ -10,7 +10,7 @@
         div(:class="[section==='note'?'button':'']" @click = "section='note'") 筆記
     pomodoro-timer(:projects.sync="projects" v-if="section==='pomodoro'")
     tasks-list(:projects.sync="projects" v-else-if="section==='tasks'")
-    discuss(:projects.sync="projects" v-else-if="section==='discuss'" :user="user")
+    discuss(:projects="projects" v-else-if="section==='discuss'" :user="user")
     a-affix.float-right(:offset-bottom="0")
       a-space(direction="vertical")
         a-button(type="circle" icon="global" size="large")
