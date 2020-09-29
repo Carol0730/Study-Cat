@@ -45,7 +45,7 @@ export default {
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2), 0 0 0 0 rgba(0,0,0,0.19);
 }
 .buttonStart {
-  border-radius: 16px;
+  border-radius: 10px;
   background-color: #FBE9C6;
   border: 2px solid #AB9872;
   color: #DB5D2B;
@@ -91,6 +91,9 @@ export default {
   transform: translateX(-50%);
   font-size: 18px;
   color: white;
+}
+.ant-select-selection{
+  border-radius:16px;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

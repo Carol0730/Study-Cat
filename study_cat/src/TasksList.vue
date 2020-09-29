@@ -3,7 +3,7 @@
     div.w-100(style="max-width:400px")
       div.list-item.d-flex.align-items-center(v-for="item in Object.values(projects)")
         div.flex-grow-1
-          p.m-0.pl-3.text-left(v-if="editingProjectName!==item.name") {{item.name}}
+          p.m-0.pl-2.text-left(v-if="editingProjectName!==item.name") {{item.name}}
           input.input1.w-100(v-else v-model="editingProjectNewName" @keyup.enter="commitEdit")
         div(v-if="editingProjectName!==item.name")
           span.containerTomatoNum
@@ -70,6 +70,7 @@ export default {
 <style>
 .containerTomatoNum{
   position: relative;
+  margin: 0 8px 0 0;
 }
 .list-item {
   margin: auto;
