@@ -6,8 +6,9 @@
           p.m-0.pl-3.text-left(v-if="editingProjectName!==item.name") {{item.name}}
           input.input1.w-100(v-else v-model="editingProjectNewName" @keyup.enter="commitEdit")
         div(v-if="editingProjectName!==item.name")
-          span.pTomato {{item.pomodoro}}
-          img(src="./assets/little tomato.png" width="30" height="30")
+          span.containerTomatoNum
+            span.pTomato {{item.pomodoro}}
+            img(src="./assets/little tomato.png" width="30" height="30")
           button.buttonEdit(@click="setEditingProjects(item)") 修改
           button.buttonDelete(@click="deleteProject(item)") 刪除
         div(v-else)
@@ -67,6 +68,9 @@ export default {
 </script>
 
 <style>
+.containerTomatoNum{
+  position: relative;
+}
 .list-item {
   margin: auto;
   padding: 10px;
@@ -156,6 +160,9 @@ export default {
   background-color:#EB8D8D;
 }
 .pTomato{
-  position: inherit;
+  color:white;
+  position: absolute;
+  right:36%;
+  top:22%;
 }
 </style>
