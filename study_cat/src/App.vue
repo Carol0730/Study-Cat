@@ -3,26 +3,31 @@
     p
       img(src="./assets/Group 26.png" width="208" height="61")
     p
-      a-space
-        .button(@click="section='tasks'") 番茄鐘
-        .button(@click="section='pomodoro'") 任務
-    pomodoro-timer(:projects.sync="projects" v-if="section==='tasks'")
-    tasks-list(:projects.sync="projects" v-else-if="section==='pomodoro'")
+      a-space(size="large")
+        div(:class="[section==='pomodoro'?'button':'']" @click="section='pomodoro'") 番茄鐘
+        div(:class="[section==='tasks'?'button':'']" @click = "section='tasks'") 任務
+        div(:class="[section==='discuss'?'button':'']" @click = "section='discuss'") 討論版
+        div(:class="[section==='note'?'button':'']" @click = "section='note'") 筆記
+    pomodoro-timer(:projects.sync="projects" v-if="section==='pomodoro'")
+    tasks-list(:projects.sync="projects" v-else-if="section==='tasks'")
+    discuss(:projects.sync="projects" v-else-if="section==='discuss'")
 
 </template>
 
 <script>
 import PomodoroTimer from "./PomodoroTimer";
 import TasksList from "./TasksList";
+import Discuss from "@/Discuss";
+
 export default {
   name: 'App',
-    components: {TasksList, PomodoroTimer},
-    data(){
-      return{
-          section:'tasks',
-          projects:{'無任務':{name:'無任務', pomodoro:0}},
-      }
+  components: {Discuss, TasksList, PomodoroTimer},
+  data() {
+    return {
+      section: 'tasks',
+      projects: {'無任務': {name: '無任務', pomodoro: 0}},
     }
+  }
 }
 </script>
 
@@ -42,8 +47,9 @@ export default {
   width: fit-content;
   height: fit-content;
   font-weight: bold;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2), 0 0 0 0 rgba(0,0,0,0.19);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(0, 0, 0, 0.19);
 }
+
 .buttonStart {
   background-color: #FBE9C6;
   border: 2px solid #AB9872;
@@ -58,11 +64,12 @@ export default {
   width: 100px;
   height: min-content;
   font-weight: bold;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2), 0 0 0 0 rgba(0,0,0,0.19);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(0, 0, 0, 0.19);
 }
+
 .buttonSetting {
   position: absolute;
-  left:calc(50% + 50px);
+  left: calc(50% + 50px);
   background: none;
   border: none;
   box-shadow: none;
@@ -72,17 +79,20 @@ export default {
   width: fit-content;
   height: fit-content;
 }
+
 .tomato-container {
   position: relative;
 }
+
 .p1 {
-  position:absolute;
+  position: absolute;
   top: -650%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 36px;
   color: white;
 }
+
 .p2 {
   position: absolute;
   left: calc(50% + 118px);
@@ -91,6 +101,7 @@ export default {
   font-size: 18px;
   color: white;
 }
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
