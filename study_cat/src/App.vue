@@ -3,24 +3,37 @@
     p
       img(src="./assets/Group 26.png" width="208" height="61")
     p
-      a-space
-        .button(@click="section='tasks'") 番茄鐘
-        .button(@click="section='pomodoro'") 任務
-    pomodoro-timer(:projects.sync="projects" v-if="section==='tasks'")
-    tasks-list(:projects.sync="projects" v-else-if="section==='pomodoro'")
+      a-space(size="large")
+        div(:class="[section==='pomodoro'?'button':'']" @click="section='pomodoro'") 番茄鐘
+        div(:class="[section==='tasks'?'button':'']" @click = "section='tasks'") 任務
+        div(:class="[section==='discuss'?'button':'']" @click = "section='discuss'") 討論版
+        div(:class="[section==='note'?'button':'']" @click = "section='note'") 筆記
+    pomodoro-timer(:projects.sync="projects" v-if="section==='pomodoro'")
+    tasks-list(:projects.sync="projects" v-else-if="section==='tasks'")
+    discuss(:projects.sync="projects" v-else-if="section==='discuss'" :user="user")
+    a-affix.float-right(:offset-bottom="0")
+      a-space(direction="vertical")
+        a-button(type="circle" icon="global" size="large")
+        a-button(type="circle" icon="plus" size="large")
+
 
 </template>
 
 <script>
 import PomodoroTimer from "./PomodoroTimer";
 import TasksList from "./TasksList";
+import Discuss from "@/Discuss";
+
 export default {
   name: 'App',
-  components: {TasksList, PomodoroTimer},
-  data(){
-    return{
-      section:'tasks',
-      projects:{},
+  components: {Discuss, TasksList, PomodoroTimer},
+  data() {
+    return {
+      section: 'discuss',
+      projects: {'無任務': {name: '無任務', pomodoro: 0}},
+      user:{
+        name:'ㄤㄤ'
+      }
     }
   }
 }
