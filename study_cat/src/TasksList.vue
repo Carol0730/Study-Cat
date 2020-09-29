@@ -1,12 +1,13 @@
 <template lang="pug">
   div.container.d-flex.justify-content-center
     div.w-100(style="max-width:400px")
-      div.d-flex.align-items-center(v-for="item in Object.values(projects)")
+      div.list-item.d-flex.align-items-center(v-for="item in Object.values(projects)")
         div.flex-grow-1
           p.m-0.pl-3.text-left(v-if="editingProjectName!==item.name") {{item.name}}
           input.input1.w-100(v-else v-model="editingProjectNewName" @keyup.enter="commitEdit")
         div(v-if="editingProjectName!==item.name")
-          span {{item.pomodoro}}
+          span.pTomato {{item.pomodoro}}
+          img(src="./assets/little tomato.png" width="30" height="30")
           button.buttonEdit(@click="setEditingProjects(item)") 修改
           button.buttonDelete(@click="deleteProject(item)") 刪除
         div(v-else)
@@ -14,7 +15,7 @@
 
       div.d-flex.align-items-center
         input.input.flex-grow-1(v-model="newProjectName" placeholder="想新增什麼科目呢？" @keyup.enter="addProjects")
-        button.buttonEdit(@click="addProjects" icon="plus" shape="circle") ＋
+        button.buttonAdd(@click="addProjects" icon="plus" shape="circle") ＋
 </template>
 <script>
 export default {
@@ -66,8 +67,17 @@ export default {
 </script>
 
 <style>
+.list-item {
+  margin: auto;
+  padding: 10px;
+  margin-bottom:-1px ;
+  border-top: 1px solid #8B6C2A;
+  border-bottom: 1px solid #8B6C2A;
+}
 
 .buttonAdd{
+  background-color: #FBE9C6;
+  border: 2px solid #AB9872;
   position: relative;
   right:0;
   display: inline-block;
@@ -75,15 +85,15 @@ export default {
   width: 50px;
   height: 30px;
   border-radius: 10px;
-  color:white;
-  border: none;
+  color:#76643E;
+  /*border: #8B6C2A;*/
   padding: 5px;
   margin: 2px 4px;
   text-align: center;
   text-decoration: none;
   font-size: 14px;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2), 0 0 0 0 rgba(0,0,0,0.19);
-  background-color:#7F9BD2;
+  /*background-color:#7F9BD2;*/
 }
 
 .input {
@@ -144,5 +154,8 @@ export default {
   font-size: 14px;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2), 0 0 0 0 rgba(0,0,0,0.19);
   background-color:#EB8D8D;
+}
+.pTomato{
+  position: inherit;
 }
 </style>
