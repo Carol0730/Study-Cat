@@ -1,48 +1,55 @@
 <template lang="pug">
-  div
-    a-dropdown.w-50.p-3
-      a.ant-dropdown-link {{browsingSubject}}
-        a-icon(type="down")
-      a-menu(slot="overlay")
-        a-menu-item(v-for="p in Object.values(projects)" :key="p.name" :value="p.name" @click="switchProject") {{p.name}}
+  div.container.d-flex.justify-content-center
+    div.w-100(style="max-width:400px")
+      a-dropdown.w-50.p-3
+        a.ant-dropdown-link {{browsingSubject}}
+          a-icon(type="down")
+        a-menu(slot="overlay")
+          a-menu-item(v-for="p in Object.values(projects)" :key="p.name" :value="p.name" @click="switchProject") {{p.name}}
 
-    br
-    br
-    a-space(align="start")
-      a(@click="browsingDiscussStatus='all'")
-        a-icon(type="star")
-        |問題
+      br
+      br
+      a-space(align="start")
+        a.d-flex.align-items-center(@click="browsingDiscussStatus='all'")
+          a-icon(type="star")
+          span.ml-1 問題
 
-      a-divider(type="vertical")
-      a(@click="browsingDiscussStatus='unsolved'") 待解決
-      a-divider(type="vertical")
-      a(@click="browsingDiscussStatus='solved'") 已解決
+        a-divider(type="vertical")
+        a(@click="browsingDiscussStatus='unsolved'") 待解決
+        a-divider(type="vertical")
+        a(@click="browsingDiscussStatus='solved'") 已解決
 
-    a-card(v-for="discuss in discusses" :key="discuss.content + discuss.author").w-100.p-3
-      a-space.main-content(align="start")
+      a-card(v-for="discuss in discusses" :key="discuss.content + discuss.author").w-100.p-3
+        a-space.main-content(align="start")
+          a-space(direction="vertical")
+            a-avatar
+            span {{discuss.author}}
+            a-button(v-show="discuss.author === user.name" @click="discuss.status = discuss.status==='solved'? 'unsolved':'solved'") {{discuss.status==='solved'? '設為未解決':'設為已解決'}}
+          a-space(direction="vertical")
+            //span {{{unsolved:'待解決', solved:'已解決'}[discuss.status]}}
+            a-card.w-100.p-3 {{discuss.content}}
+        a-divider.operation-zone(orientation="left")
+          a-space(align="end")
+            span {{discuss.star.length}}
+            a-button(type="link" @click="starDiscuss(discuss)")
+              a-icon(type="star" :theme="discuss.star.includes(user.name)?'filled':'outlined'" )
+            span {{discuss.comments.length}}
+            a-button(icon="message" type="link")
         a-space(direction="vertical")
-          a-avatar
-          span {{discuss.author}}
-        a-space(direction="vertical")
-          //span {{{unsolved:'待解決', solved:'已解決'}[discuss.status]}}
-          a-card.w-100.p-3 {{discuss.content}}
-      a-divider.operation-zone(orientation="left")
-        a-space(align="end")
-          span {{discuss.star.length}}
-          a-button(type="link" @click="starDiscuss(discuss)")
-            a-icon(type="star" :theme="discuss.star.includes(user.name)?'filled':'outlined'" )
-          span {{discuss.comments.length}}
-          a-button(icon="message" type="link")
-      a-space.comment(v-for="comment of discuss.comments" :key="JSON.stringify(comment)")
-        a-space(direction="vertical")
-          a-avatar
-          span {{comment.author}}
-        a-card
-          p {{comment.content}}
+          a-space.comment(v-for="comment of discuss.comments" :key="JSON.stringify(comment)")
+            a-space(direction="vertical")
+              a-avatar
+              span {{comment.author}}
+            a-card
+              p {{comment.content}}
 
-    a-textarea( v-model="sendingDiscussContent" placeholder="縮縮你的問題..." :autoSize="true")
-    a-button(type="link" @click="addDiscuss") 送出問題
-      a-icon(type="up")
+          a-textarea( v-model="sendingComment" placeholder="你的評論..." :autoSize="true")
+          a-button(type="link" @click="addComment(discuss)") 送出評論
+            a-icon(type="up")
+
+      a-textarea( v-model="sendingDiscussContent" placeholder="縮縮你的問題..." :autoSize="true")
+      a-button(type="link" @click="addDiscuss") 送出問題
+        a-icon(type="up")
 
 
 
@@ -57,6 +64,7 @@ export default {
   data() {
     return {
       sendingDiscussContent:'',
+      sendingComment:'',
       browsingSubject: '無任務',
       browsingDiscussStatus: 'all',
       subjectDiscuss: {
@@ -100,14 +108,20 @@ export default {
     addDiscuss(){
       this.discusses.push({
         content: this.sendingDiscussContent,
-            status:'unsolved',
-            time: '2020',
-            author: this.user.name,
-            star: [],
-            comments: [
-        ]
+        status:'unsolved',
+        time: '2020',
+        author: this.user.name,
+        star: [],
+        comments: []
       })
       this.sendingDiscussContent = ''
+    },
+    addComment(discuss){
+      discuss.comments.push({
+        content: this.sendingComment,
+            author: this.user.name,
+      })
+      this.sendingComment = ''
     },
     switchProject({key}){
       this.browsingSubject = key

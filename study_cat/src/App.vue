@@ -14,7 +14,13 @@
     a-affix.float-right(:offset-bottom="0")
       a-space(direction="vertical")
         a-button(type="circle" icon="global" size="large")
-        a-button(type="circle" icon="plus" size="large")
+        a-button(type="circle" icon="setting" size="large" @click="showSetting=true")
+    a-modal(title="設定"
+      :visible="showSetting"
+      @ok="showSetting=false"
+      @cancel="showSetting=false")
+      p 我的姓名
+      a-input(v-model="user.name")
 
 
 </template>
@@ -33,8 +39,11 @@ export default {
       projects: {'無任務': {name: '無任務', pomodoro: 0}},
       user:{
         name:'ㄤㄤ'
-      }
+      },
+      showSetting:false,
     }
+  },
+  methods:{
   }
 }
 </script>
@@ -49,8 +58,8 @@ export default {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 8px;
-  margin: 4px 10px;
+  font-size: 16px;
+  margin: 6px;
   cursor: pointer;
   width: fit-content;
   height: fit-content;
