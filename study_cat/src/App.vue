@@ -2,12 +2,11 @@
   div#app
     p
       img(src="@/assets/Group 26.png" width="208" height="61")
-    p
-      a-space(size="large")
-        router-link(to="/pomodoro" :class="{button:$router.currentRoute.path==='/pomodoro'}") 番茄鐘
-        router-link(to="/projects" :class="{button:$router.currentRoute.path==='/projects'}") 任務
-        router-link(to="/discuss" :class="{button:$router.currentRoute.path==='/discuss'}") 討論版
-        router-link(to="/coop-note" :class="{button:$router.currentRoute.path==='/coop-note'}") 共筆
+    div(style="max-width: 300px").d-flex.w-100.mx-auto.mb-3
+      router-link.nav-btn(to="/pomodoro" :class="{'nav-btn-active':$router.currentRoute.path==='/pomodoro'}") 番茄鐘
+      router-link.nav-btn(to="/projects" :class="{'nav-btn-active':$router.currentRoute.path==='/projects'}") 任務
+      router-link.nav-btn(to="/discuss" :class="{'nav-btn-active':$router.currentRoute.path==='/discuss'}") 討論版
+      router-link.nav-btn(to="/coop-note" :class="{'nav-btn-active':$router.currentRoute.path==='/coop-note'}") 共筆
 
     router-view(:projects.sync="projects" :user="user")
 
@@ -49,6 +48,27 @@ export default {
 </script>
 
 <style>
+
+/* 導覽列按鈕 */
+.nav-btn {
+  width: 25%;
+  height: 40px;
+  line-height: 36px;
+  cursor: pointer;
+  color: #76643E !important;
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none !important;
+  font-weight: bold;
+  border: 2px solid transparent;
+}
+.nav-btn-active {
+  border-radius: 16px;
+  border: 2px solid #AB9872;
+  background-color: #FBE9C6;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2), 0 0 0 0 rgba(0,0,0,0.19);
+}
+
 .button {
   border-radius: 16px;
   background-color: #FBE9C6;
