@@ -189,7 +189,7 @@ a:hover {
 
 .sendC{
   position:absolute;
-  right:7%;
+  right:28px;
   margin:4px 0 0 0;
   border:none;
   border-radius: 8px;
@@ -199,7 +199,7 @@ a:hover {
 
 .sendQ{
   position:absolute;
-  right:4px;
+  right:5px;
   margin:4px 0 0 0;
   border:none;
   border-radius: 8px;
