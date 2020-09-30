@@ -1,0 +1,185 @@
+<template lang="pug">
+  div.container.d-flex.justify-content-center
+    div.w-100(style="max-width:400px")
+      a-dropdown.w-50
+        a.ant-dropdown-link {{browsingSubject}}
+          a-icon(type="down")
+        a-menu(slot="overlay")
+          a-menu-item(v-for="p in Object.values(projects)" :key="p.name" :value="p.name" @click="switchProject") {{p.name}}
+
+      br
+      br
+      a-space(align="start")
+        .d-flex.align-items-center(@click="browsingDiscussStatus='all'")
+          a-icon(type="star")
+          span.ml-1 問題
+
+        a-divider(type="vertical")
+        a(@click="browsingDiscussStatus='unsolved'") 待解決
+        a-divider(type="vertical")
+        a(@click="browsingDiscussStatus='solved'") 已解決
+
+      a-card(v-for="discuss in discusses" :key="discuss.content + discuss.author").w-100.p-3.mt-2.text-left
+        a-space.main-content.align(align="start")
+          a-space.text-center(direction="vertical")
+            a-avatar
+            span {{discuss.author}}
+            button.btn-solved(v-show="discuss.author === user.name" @click="discuss.status = discuss.status==='solved'? 'unsolved':'solved'") {{discuss.status==='solved'? '未解決':'已解決'}}
+          a-space(direction="vertical")
+            //span {{{unsolved:'待解決', solved:'已解決'}[discuss.status]}}
+            a-card.box {{discuss.content}}
+        a-divider.operation-zone(orientation="left")
+          a-space(align="end")
+            span {{discuss.star.length}}
+            a-button(type="link" @click="starDiscuss(discuss)")
+              a-icon(type="star" :theme="discuss.star.includes(user.name)?'filled':'outlined'" )
+            span {{discuss.comments.length}}
+            a-button(icon="message" type="link")
+        a-space(direction="vertical")
+          a-space.comment(v-for="comment of discuss.comments" :key="JSON.stringify(comment)")
+            a-space(direction="vertical")
+              a-avatar
+              span {{comment.author}}
+            a-card
+              p.m-0 {{comment.content}}
+
+          a-textarea( v-model="sendingComment" placeholder="你的評論..." :autoSize="true")
+          a-button(type="link" @click="addComment(discuss)") 送出評論
+            a-icon(type="up")
+
+      a-textarea( v-model="sendingDiscussContent" placeholder="縮縮你的問題..." :autoSize="true")
+      a-button(type="link" @click="addDiscuss") 送出問題
+        a-icon(type="up")
+
+
+
+</template>
+<script>
+export default {
+  name: 'discuss',
+  props: {
+    projects: {},
+    user: {}
+  },
+  data() {
+    return {
+      sendingDiscussContent:'',
+      sendingComment:'',
+      browsingSubject: '無任務',
+      browsingDiscussStatus: 'all',
+      subjectDiscuss: {
+        '無任務': [
+          {
+            content: '哈哈',
+            status:'unsolved',
+            time: '2020',
+            author: 'Annoy',
+            star: ["a"],
+            comments: [
+              {author: "Annoy2", content: "wh"}
+            ]
+          }]
+      }
+    }
+  },
+  computed: {
+    discusses:{
+      get(){
+
+        var discuss = this.subjectDiscuss[this.browsingSubject]
+        if(this.browsingDiscussStatus !== 'all'){
+          discuss = discuss.filter((v) => v.status === this.browsingDiscussStatus)
+        }
+        return discuss
+      },
+      set(newValue){
+        this.subjectDiscuss = newValue
+      }
+    }
+  },
+  methods:{
+    starDiscuss(discuss){
+      if(discuss.star.includes(this.user.name)){
+        discuss.star.splice(discuss.star.indexOf(this.user.name), 1)
+      }else{
+        discuss.star.push(this.user.name)
+      }
+    },
+    addDiscuss(){
+      this.discusses.push({
+        content: this.sendingDiscussContent,
+        status:'unsolved',
+        time: '2020',
+        author: this.user.name,
+        star: [],
+        comments: []
+      })
+      this.sendingDiscussContent = ''
+    },
+    addComment(discuss){
+      discuss.comments.push({
+        content: this.sendingComment,
+            author: this.user.name,
+      })
+      this.sendingComment = ''
+    },
+    switchProject({key}){
+      this.browsingSubject = key
+    },
+  }
+}
+</script>
+
+<style>
+.ant-card-bordered {
+  border: 1px solid #AB9872;
+  border-radius: 6px;
+  margin-bottom:5px;
+}
+
+/*.align{*/
+/*  text-align: left;*/
+/*}*/
+
+.box {
+  width: 230px;
+}
+
+.btn-solved{
+  height: 25px;
+  width: 50px;
+  padding: 0 2px;
+  border-radius: 6px;
+  border:1px solid #AB9872;
+  background-color: white;
+  cursor: pointer;
+  margin-top:-20px;
+}
+
+.ant-avatar {
+  width:42px;
+  height:42px;
+}
+
+.ant-card-body {
+  padding: 6px;
+  zoom: 1;
+}
+
+.commitWord {
+  word-wrap: break-word;
+}
+
+.ant-btn-link {
+  color: #76643E;
+}
+
+a:hover {
+  color: #76643E;
+}
+::selection {
+  color: #fff;
+  background: #76643E;
+}
+
+</style>
