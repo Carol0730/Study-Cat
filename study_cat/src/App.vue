@@ -1,16 +1,16 @@
 <template lang="pug">
   div#app
     p
-      img(src="./assets/Group 26.png" width="208" height="61")
+      img(src="@/assets/Group 26.png" width="208" height="61")
     p
       a-space(size="large")
-        div(:class="[section==='pomodoro'?'button':'']" @click="section='pomodoro'") 番茄鐘
-        div(:class="[section==='tasks'?'button':'']" @click = "section='tasks'") 任務
-        div(:class="[section==='discuss'?'button':'']" @click = "section='discuss'") 討論版
-        div(:class="[section==='note'?'button':'']" @click = "section='note'") 筆記
-    pomodoro-timer(:projects.sync="projects" v-if="section==='pomodoro'")
-    tasks-list(:projects.sync="projects" v-else-if="section==='tasks'")
-    discuss(:projects="projects" v-else-if="section==='discuss'" :user="user")
+        router-link(to="/pomodoro" :class="{button:$router.currentRoute.path==='/pomodoro'}") 番茄鐘
+        router-link(to="/projects" :class="{button:$router.currentRoute.path==='/projects'}") 任務
+        router-link(to="/discuss" :class="{button:$router.currentRoute.path==='/discuss'}") 討論版
+        router-link(to="/coop-note" :class="{button:$router.currentRoute.path==='/coop-note'}") 共筆
+
+    router-view(:projects.sync="projects" :user="user")
+
     a-affix.float-right(:offset-bottom="0")
       a-space(direction="vertical")
         a-button(type="circle" icon="global" size="large")
@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import PomodoroTimer from "./PomodoroTimer";
-import TasksList from "./TasksList";
-import Discuss from "@/Discuss";
+import PomodoroTimer from "./components/PomodoroTimer";
+import TasksList from "./components/TasksList";
+import Discuss from "@/components/Discuss";
 
 export default {
   name: 'App',
@@ -38,7 +38,7 @@ export default {
       section: 'discuss',
       projects: {'無任務': {name: '無任務', pomodoro: 0}},
       user:{
-        name:'ㄤㄤ'
+        name:'無名氏'
       },
       showSetting:false,
     }
