@@ -46,7 +46,7 @@
           a-textarea( v-model="sendingComment" placeholder="你的評論..." :autoSize="true")
           a-button(type="link" @click="addComment(discuss)") 送出評論
             a-icon(type="up")
-
+      span(style="opacity:0") haha
       a-textarea( v-model="sendingDiscussContent" placeholder="縮縮你的問題..." :autoSize="true")
       a-button(type="link" @click="addDiscuss") 送出問題
         a-icon(type="up")
@@ -173,13 +173,16 @@ export default {
 .ant-btn-link {
   color: #76643E;
 }
-
-a:hover {
+.ant-dropdown-link {
   color: #76643E;
 }
-::selection {
-  color: #fff;
-  background: #76643E;
+
+a:hover {
+  color: #1890ff;
 }
+/*::selection {*/
+/*  color: #fff;*/
+/*  background: #76643E;*/
+/*}*/
 
 </style>

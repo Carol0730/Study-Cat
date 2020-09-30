@@ -105,7 +105,7 @@ export default {
   /*width: 40%;*/
   height: 15px;
   padding: 16px 16px;
-  margin: 8px 0;
+  margin: 24px 0;
   display: inline-block;
   border: 1px solid #ccc;
   border-radius: 10px;
