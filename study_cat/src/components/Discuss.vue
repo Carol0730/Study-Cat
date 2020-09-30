@@ -35,7 +35,7 @@
               a-icon(type="star" :theme="discuss.star.includes(user.name)?'filled':'outlined'" )
             span {{discuss.comments.length}}
             a-button(icon="message" type="link")
-        div.w-100(v-for="comment of discuss.comments" :key="JSON.stringify(comment)")
+        div.mb-3.w-100(v-for="comment of discuss.comments" :key="JSON.stringify(comment)")
           div.d-flex.align.w-100(align="start" style="width: 100%")
             a-space(direction="vertical")
               a-avatar
@@ -45,12 +45,12 @@
 
 
           a-textarea( v-model="sendingComment" placeholder="你的評論..." :autoSize="true")
-          a-button(type="link" @click="addComment(discuss)") 送出評論
-            a-icon(type="up")
-      span(style="opacity:0") haha
-      a-textarea( v-model="sendingDiscussContent" placeholder="縮縮你的問題..." :autoSize="true")
-      a-button(type="link" @click="addDiscuss") 送出問題
-        a-icon(type="up")
+          button.sendC(type="link" @click="addComment(discuss)") 送出評論
+            a-icon(type="enter")
+      div.position-relative.mt-3
+        a-textarea( v-model="sendingDiscussContent" placeholder="縮縮你的問題..." :autoSize="true")
+        button.sendQ(type="link" @click="addDiscuss") 送出問題
+          a-icon(type="enter")
 
 
 
@@ -187,4 +187,24 @@ a:hover {
 /*  background: #76643E;*/
 /*}*/
 
+.sendC{
+  position:absolute;
+  right:7%;
+  margin:4px 0 0 0;
+  border:none;
+  border-radius: 8px;
+  background-color:#FBE9C6;
+  color:#76643E;
+}
+
+.sendQ{
+  position:absolute;
+  right:4px;
+  margin:4px 0 0 0;
+  border:none;
+  border-radius: 8px;
+  background-color:#FBE9C6;
+  color:#76643E;
+  font-size: 14px;
+}
 </style>
