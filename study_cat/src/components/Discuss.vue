@@ -11,7 +11,7 @@
       br
       a-space(align="start")
         .d-flex.align-items-center(@click="browsingDiscussStatus='all'")
-          a-icon(type="star")
+          img(src="@/assets/Star 6.png" width="15" height="15")
           span.ml-1 問題
 
         a-divider(type="vertical")
