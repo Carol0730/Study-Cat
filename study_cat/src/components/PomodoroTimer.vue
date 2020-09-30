@@ -28,7 +28,8 @@ export default {
   name: 'pomodoro-timer',
   components: {},
   props: {
-    projects: {}
+    projects: {},
+    user: Object
   },
   data() {
     return {
@@ -78,7 +79,8 @@ export default {
     },
     submitt() {
       const data = {
-        studytime: this.timeLeft,
+        userr: this.user.name,
+        studytime: this.workMinutes,
         relaxtime: this.relax_time,
         subject: this.projects
         //User
