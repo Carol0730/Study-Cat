@@ -76,8 +76,8 @@ export default {
   margin: auto;
   padding: 10px;
   margin-bottom:-1px ;
-  border-top: 1px solid #8B6C2A;
-  border-bottom: 1px solid #8B6C2A;
+  border-top: 1px solid #AB9872;
+  border-bottom: 1px solid #AB9872;
 }
 
 .buttonAdd{

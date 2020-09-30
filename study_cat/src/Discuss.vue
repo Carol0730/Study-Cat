@@ -1,7 +1,7 @@
 <template lang="pug">
   div.container.d-flex.justify-content-center
     div.w-100(style="max-width:400px")
-      a-dropdown.w-50.p-3
+      a-dropdown.w-50
         a.ant-dropdown-link {{browsingSubject}}
           a-icon(type="down")
         a-menu(slot="overlay")
@@ -10,7 +10,7 @@
       br
       br
       a-space(align="start")
-        a.d-flex.align-items-center(@click="browsingDiscussStatus='all'")
+        .d-flex.align-items-center(@click="browsingDiscussStatus='all'")
           a-icon(type="star")
           span.ml-1 問題
 
@@ -19,15 +19,15 @@
         a-divider(type="vertical")
         a(@click="browsingDiscussStatus='solved'") 已解決
 
-      a-card(v-for="discuss in discusses" :key="discuss.content + discuss.author").w-100.p-3
-        a-space.main-content(align="start")
-          a-space(direction="vertical")
+      a-card(v-for="discuss in discusses" :key="discuss.content + discuss.author").w-100.p-3.mt-2.text-left
+        a-space.main-content.align(align="start")
+          a-space.text-center(direction="vertical")
             a-avatar
             span {{discuss.author}}
-            a-button(v-show="discuss.author === user.name" @click="discuss.status = discuss.status==='solved'? 'unsolved':'solved'") {{discuss.status==='solved'? '設為未解決':'設為已解決'}}
+            button.btn-solved(v-show="discuss.author === user.name" @click="discuss.status = discuss.status==='solved'? 'unsolved':'solved'") {{discuss.status==='solved'? '未解決':'已解決'}}
           a-space(direction="vertical")
             //span {{{unsolved:'待解決', solved:'已解決'}[discuss.status]}}
-            a-card.w-100.p-3 {{discuss.content}}
+            a-card.box {{discuss.content}}
         a-divider.operation-zone(orientation="left")
           a-space(align="end")
             span {{discuss.star.length}}
@@ -41,7 +41,7 @@
               a-avatar
               span {{comment.author}}
             a-card
-              p {{comment.content}}
+              p.m-0 {{comment.content}}
 
           a-textarea( v-model="sendingComment" placeholder="你的評論..." :autoSize="true")
           a-button(type="link" @click="addComment(discuss)") 送出評論
@@ -76,7 +76,7 @@ export default {
             author: 'Annoy',
             star: ["a"],
             comments: [
-              {author: "Annoy2", content: "wow"}
+              {author: "Annoy2", content: "wh"}
             ]
           }]
       }
@@ -129,3 +129,57 @@ export default {
   }
 }
 </script>
+
+<style>
+.ant-card-bordered {
+  border: 1px solid #AB9872;
+  border-radius: 6px;
+  margin-bottom:5px;
+}
+
+/*.align{*/
+/*  text-align: left;*/
+/*}*/
+
+.box {
+  width: 230px;
+}
+
+.btn-solved{
+  height: 25px;
+  width: 50px;
+  padding: 0 2px;
+  border-radius: 6px;
+  border:1px solid #AB9872;
+  background-color: white;
+  cursor: pointer;
+  margin-top:-20px;
+}
+
+.ant-avatar {
+  width:42px;
+  height:42px;
+}
+
+.ant-card-body {
+  padding: 6px;
+  zoom: 1;
+}
+
+.commitWord {
+  word-wrap: break-word;
+}
+
+.ant-btn-link {
+  color: #76643E;
+}
+
+a:hover {
+  color: #76643E;
+}
+::selection {
+  color: #fff;
+  background: #76643E;
+}
+
+</style>

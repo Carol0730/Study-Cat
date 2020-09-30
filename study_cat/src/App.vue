@@ -58,7 +58,7 @@ export default {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 14px;
   margin: 6px;
   cursor: pointer;
   width: fit-content;
