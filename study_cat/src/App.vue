@@ -1,20 +1,19 @@
 <template lang="pug">
   div#app
     p
-      img(src="./assets/Group 26.png" width="208" height="61")
-    p
-      a-space(size="large")
-        div(:class="[section==='pomodoro'?'button':'']" @click="section='pomodoro'") 番茄鐘
-        div(:class="[section==='tasks'?'button':'']" @click = "section='tasks'") 任務
-        div(:class="[section==='discuss'?'button':'']" @click = "section='discuss'") 討論版
-        div(:class="[section==='note'?'button':'']" @click = "section='note'") 筆記
-    pomodoro-timer(:projects.sync="projects" v-if="section==='pomodoro'")
-    tasks-list(:projects.sync="projects" v-else-if="section==='tasks'")
-    discuss(:projects="projects" v-else-if="section==='discuss'" :user="user")
-    a-affix.float-right(:offset-bottom="0")
-      a-space(direction="vertical")
-        a-button(type="circle" icon="global" size="large")
-        a-button(type="circle" icon="setting" size="large" @click="showSetting=true")
+      img(src="@/assets/Group 26.png" width="208" height="61")
+    div(style="max-width: 300px").d-flex.w-100.mx-auto.mb-3
+      router-link.nav-btn(to="/pomodoro" :class="{'nav-btn-active':$router.currentRoute.path==='/pomodoro'}") 番茄鐘
+      router-link.nav-btn(to="/projects" :class="{'nav-btn-active':$router.currentRoute.path==='/projects'}") 任務
+      router-link.nav-btn(to="/discuss" :class="{'nav-btn-active':$router.currentRoute.path==='/discuss'}") 討論版
+      router-link.nav-btn(to="/coop-note" :class="{'nav-btn-active':$router.currentRoute.path==='/coop-note'}") 共筆
+
+    router-view(:projects.sync="projects" :user="user")
+
+    div.d-flex.flex-column.fab-buttons
+      a-button(type="circle" icon="global" size="large").mb-2.fab-btn
+      a-button(type="circle" icon="setting" size="large" @click="showSetting=true").fab-btn
+
     a-modal(title="設定"
       :visible="showSetting"
       @ok="showSetting=false"
@@ -26,9 +25,9 @@
 </template>
 
 <script>
-import PomodoroTimer from "./PomodoroTimer";
-import TasksList from "./TasksList";
-import Discuss from "@/Discuss";
+import PomodoroTimer from "./components/PomodoroTimer";
+import TasksList from "./components/TasksList";
+import Discuss from "@/components/Discuss";
 
 export default {
   name: 'App',
@@ -38,7 +37,7 @@ export default {
       section: 'discuss',
       projects: {'無任務': {name: '無任務', pomodoro: 0}},
       user:{
-        name:'ㄤㄤ'
+        name:'無名氏'
       },
       showSetting:false,
     }
@@ -49,6 +48,27 @@ export default {
 </script>
 
 <style>
+
+/* 導覽列按鈕 */
+.nav-btn {
+  width: 25%;
+  height: 40px;
+  line-height: 36px;
+  cursor: pointer;
+  color: #76643E !important;
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none !important;
+  font-weight: bold;
+  border: 2px solid transparent;
+}
+.nav-btn-active {
+  border-radius: 16px;
+  border: 2px solid #AB9872;
+  background-color: #FBE9C6;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2), 0 0 0 0 rgba(0,0,0,0.19);
+}
+
 .button {
   border-radius: 16px;
   background-color: #FBE9C6;
@@ -124,5 +144,17 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.fab-buttons {
+  position: fixed;
+  bottom: 24px;
+  right: 16px;
+}
+.fab-btn {
+  color: #799BD7
+}
+.fab-btn, .fab-btn:hover, .fab-btn:focus {
+  background-color: #DBE9F3
 }
 </style>

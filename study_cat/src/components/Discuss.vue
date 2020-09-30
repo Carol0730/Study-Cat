@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.container.d-flex.justify-content-center
+  div.container.d-flex.justify-content-center.bg-white
     div.w-100(style="max-width:400px")
       a-dropdown.w-50
         a.ant-dropdown-link {{browsingSubject}}
@@ -20,14 +20,14 @@
         a(@click="browsingDiscussStatus='solved'") 已解決
 
       a-card(v-for="discuss in discusses" :key="discuss.content + discuss.author").w-100.p-3.mt-2.text-left
-        a-space.main-content.align(align="start")
+        div.d-flex.align.w-100(align="start" style="width: 100%")
           a-space.text-center(direction="vertical")
             a-avatar
             span {{discuss.author}}
             button.btn-solved(v-show="discuss.author === user.name" @click="discuss.status = discuss.status==='solved'? 'unsolved':'solved'") {{discuss.status==='solved'? '未解決':'已解決'}}
-          a-space(direction="vertical")
+          div.ml-2(style="width: calc(100% - 50px)")
             //span {{{unsolved:'待解決', solved:'已解決'}[discuss.status]}}
-            a-card.box {{discuss.content}}
+            a-card.box.w-100 {{discuss.content}}
         a-divider.operation-zone(orientation="left")
           a-space(align="end")
             span {{discuss.star.length}}
@@ -37,6 +37,7 @@
             a-button(icon="message" type="link")
         a-space(direction="vertical")
           a-space.comment(v-for="comment of discuss.comments" :key="JSON.stringify(comment)")
+          
             a-space(direction="vertical")
               a-avatar
               span {{comment.author}}
@@ -142,7 +143,8 @@ export default {
 /*}*/
 
 .box {
-  width: 230px;
+  /*width:230px;*/
+  height:100px;
 }
 
 .btn-solved{

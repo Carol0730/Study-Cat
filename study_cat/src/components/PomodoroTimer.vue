@@ -6,7 +6,7 @@
       a-menu(slot="overlay")
         a-menu-item(v-for="p in Object.values(projects)" :key="p.name" :value="p.name" @click="switchProject") {{p.name}}
     p
-      img(src="./assets/Group 29.png" width="300" height="300")
+      img(src="@/assets/Group 29.png" width="300" height="300")
       .tomato-container
         .p1 {{timerRunning ? Math.floor(timeLeft / 60) : workMinutes}} : {{(timerRunning?timeLeft % 60:0)}}
         p(style="opacity:0") haha
@@ -23,11 +23,10 @@
       //setting_time(:projects.sync="projects" v-show="section==='setting_time'")
 </template>
 <script>
-import Setting_time from "./Setting_time";
 
 export default {
   name: 'pomodoro-timer',
-  components: {Setting_time},
+  components: {},
   props: {
     projects: {}
   },
