@@ -37,20 +37,25 @@
             a-button(icon="message" type="link")
         a-space(direction="vertical")
           a-space.comment(v-for="comment of discuss.comments" :key="JSON.stringify(comment)")
-          
+
             a-space(direction="vertical")
               a-avatar
               span {{comment.author}}
             a-card
               p.m-0 {{comment.content}}
 
-          a-textarea( v-model="sendingComment" placeholder="你的評論..." :autoSize="true")
+          a-textarea( v-model="discuss.commentDraft" placeholder="你的評論..." :autoSize="true")
           a-button(type="link" @click="addComment(discuss)") 送出評論
             a-icon(type="up")
-      span(style="opacity:0") haha
-      a-textarea( v-model="sendingDiscussContent" placeholder="縮縮你的問題..." :autoSize="true")
-      a-button(type="link" @click="addDiscuss") 送出問題
-        a-icon(type="up")
+
+      div.d-flex.align.w-100(align="start" style="width: 100%")
+        a-space.text-center(direction="vertical")
+          a-avatar
+          span {{(user.displayName) ? user.displayName:user.name}}
+        div.ml-2(style="width: calc(100% - 50px)")
+          a-textarea( v-model="sendingDiscussContent" placeholder="縮縮你的問題..." :autoSize="true")
+          a-button(type="link" @click="addDiscuss") 送出問題
+            a-icon(type="up")
 
 
 
@@ -78,7 +83,8 @@ export default {
             star: ["a"],
             comments: [
               {author: "Annoy2", content: "wh"}
-            ]
+            ],
+            commentDraft:''
           }]
       }
     }
@@ -100,10 +106,10 @@ export default {
   },
   methods:{
     starDiscuss(discuss){
-      if(discuss.star.includes(this.user.name)){
+      if(discuss.star.includes(this.user.displayName)){
         discuss.star.splice(discuss.star.indexOf(this.user.name), 1)
       }else{
-        discuss.star.push(this.user.name)
+        discuss.star.push(this.user.displayName)
       }
     },
     addDiscuss(){
@@ -111,7 +117,7 @@ export default {
         content: this.sendingDiscussContent,
         status:'unsolved',
         time: '2020',
-        author: this.user.name,
+        author: this.user.displayName ?? this.user.name,
         star: [],
         comments: []
       })
@@ -119,10 +125,10 @@ export default {
     },
     addComment(discuss){
       discuss.comments.push({
-        content: this.sendingComment,
-            author: this.user.name,
+        content: discuss.commentDraft,
+        author: this.user.displayName ?? this.user.name,
       })
-      this.sendingComment = ''
+      discuss.commentDraft = ''
     },
     switchProject({key}){
       this.browsingSubject = key
