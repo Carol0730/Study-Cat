@@ -11,10 +11,10 @@
 
     router-view(:projects.sync="projects" :user="user")
 
-    a-affix.float-right(:offset-bottom="0")
-      a-space(direction="vertical")
-        a-button(type="circle" icon="global" size="large")
-        a-button(type="circle" icon="setting" size="large" @click="showSetting=true")
+    div.d-flex.flex-column.fab-buttons
+      a-button(type="circle" icon="global" size="large").mb-2.fab-btn
+      a-button(type="circle" icon="setting" size="large" @click="showSetting=true").fab-btn
+
     a-modal(title="設定"
       :visible="showSetting"
       @ok="showSetting=false"
@@ -124,5 +124,17 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.fab-buttons {
+  position: fixed;
+  bottom: 24px;
+  right: 16px;
+}
+.fab-btn {
+  color: #799BD7
+}
+.fab-btn, .fab-btn:hover, .fab-btn:focus {
+  background-color: #DBE9F3
 }
 </style>
