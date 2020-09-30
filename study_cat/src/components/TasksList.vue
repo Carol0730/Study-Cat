@@ -8,7 +8,7 @@
         div(v-if="editingProjectName!==item.name")
           span.containerTomatoNum
             span.pTomato {{item.pomodoro}}
-            img(src="./assets/little tomato.png" width="30" height="30")
+            img(src="@/assets/little tomato.png" width="30" height="30")
           button.buttonEdit(@click="setEditingProjects(item)") 修改
           button.buttonDelete(@click="deleteProject(item)") 刪除
         div(v-else)
