@@ -35,14 +35,14 @@
               a-icon(type="star" :theme="discuss.star.includes(user.name)?'filled':'outlined'" )
             span {{discuss.comments.length}}
             a-button(icon="message" type="link")
-        a-space(direction="vertical")
-          a-space.comment(v-for="comment of discuss.comments" :key="JSON.stringify(comment)")
-          
+        div.w-100(v-for="comment of discuss.comments" :key="JSON.stringify(comment)")
+          div.d-flex.align.w-100(align="start" style="width: 100%")
             a-space(direction="vertical")
               a-avatar
-              span {{comment.author}}
-            a-card
-              p.m-0 {{comment.content}}
+              span.box {{comment.author}}
+            div.ml-2(style="width: calc(100% - 50px)")
+              a-card {{comment.content}}
+
 
           a-textarea( v-model="sendingComment" placeholder="你的評論..." :autoSize="true")
           a-button(type="link" @click="addComment(discuss)") 送出評論
