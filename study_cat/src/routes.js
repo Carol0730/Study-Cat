@@ -20,11 +20,13 @@ const routes = [
     { path: '/pomodoro', component: PomodoroTimer, props:true },
     { path: '/projects', component: TasksList, props:true  },
     { path: '/discuss', component: Discuss, props:true  },
-    { path: '/coop-note', component: CoopNote, props:true  }
+    { path: '/coop-note', component: CoopNote, props:true  },
+    { path: '*', component: PomodoroTimer, props:true  },
 ]
 
 // 3. 创建 router 实例，然后传 `routes` 配置
 // 你还可以传别的配置参数, 不过先这么简单着吧。
 export const router = new VueRouter({
+    // mode:'history',
     routes // (缩写) 相当于 routes: routes
 })
