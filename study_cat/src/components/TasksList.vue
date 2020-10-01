@@ -1,11 +1,11 @@
 <template lang="pug">
   div.container.d-flex.justify-content-center
-    div.w-100(style="max-width:400px")
+    div.w-100.mt-2(style="max-width:400px")
       div.list-item.d-flex.align-items-center(v-for="item in Object.values(projects)")
         div.flex-grow-1
           p.m-0.pl-2.text-left(v-if="editingProjectName!==item.name") {{item.name}}
           input.input1.w-100(v-else v-model="editingProjectNewName" @keyup.enter="commitEdit")
-        div(v-if="editingProjectName!==item.name")
+        div.ml-2(v-if="editingProjectName!==item.name")
           span.containerTomatoNum
             span.pTomato {{item.pomodoro}}
             img(src="@/assets/little tomato.png" width="30" height="30")
