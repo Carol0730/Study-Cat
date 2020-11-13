@@ -2,119 +2,108 @@
   div
     //a 計時任務：
     a-dropdown.w-50.p-3
-      a.ant-dropdown-link {{currentProject}}
+      a.ant-dropdown-link {{pomoSess.currentProject}}
         a-icon(type="down")
       a-menu(slot="overlay")
         a-menu-item(v-for="p in Object.values(projects)" :key="p.name" :value="p.name" @click="switchProject") {{p.name}}
     br
     p
-      img(src="@/assets/Group 29.png" width="300" height="300")
+      img(v-if="isWorkCycle === true" src="@/assets/work_pomodoro.png" width="300" height="300")
+      img(v-else             src="@/assets/rest_pomodoro.png" width="300" height="300")
       .tomato-container
         .p1
           span()
-            p(@click="workMinutes = 1/60" style="font-size:100px;display:inline").font-weight-bold
+            p(@click="setPomoSess({workMinutes: 1/60})" style="font-size:100px;display:inline").font-weight-bold
               | {{Math.floor(currentTimerSecondsLeft / 60)}}
             p(style="font-size:32px;display:inline")
               | {{(currentTimerSecondsLeft % 60).toString().padStart(2, '0')}}
         p(style="opacity:0" ) haha
         //haha 不準刪
         .p2.font-weight-bold {{totalPomodoro}}
-      a-space
-        img(v-for="index in perCycle" :key="index" :style="{opacity: (index > cyclePassed ? 0.2:1)}" src="@/assets/Group 24.png" width="36")
+      a-space(align="baseline")
+        span(v-for="index in pomoSess.perCycle * 2" :key="index" :style="{opacity: (index > pomoSess.cyclePassed ? 0.1:1)}" )
+          img(v-if="index % 2 === 1" src="@/assets/small_work_pomo.png" width="36")
+          img(v-else                src="@/assets/rest_pomodoro.png" width="24")
         //img(v-for="index in perCycle-cyclePassed" :key="index" src="@/assets/Group 24.png" width="30" )
 
     a-space(v-if="editingTime")
-      a-slider(v-model="workMinutes" :max="60" :min="1" style="width: 300px;")
-    p(v-if="editingTime")
-      .buttonStart(@click="switchTimer") {{timerRunning ? '放棄' : '開始！'}}
+      a-slider(v-model="pomoSess.workMinutes" :max="60" :min="1" style="width: 300px;")
+    p(v-else)
+      .buttonStart(v-if="isWorkCycle" @click="switchTimer") {{timerRunning ? '放棄' : '開始！'}}
+      a-space(v-else)
+        .buttonStart(@click="switchTimer") {{timerRunning ? '放棄' : '休息去！'}}
+        .buttonStart(@click="setPomoSess({cyclePassed:pomoSess.cyclePassed+1})") 跳過休息
+
     div(v-if="!timerRunning")
       .button(@click="editingTime = !editingTime") {{editingTime ? '調整完成':'調整時間'}}
       .button(@click="submitt") 儲存
 </template>
 <script>
 import swal from 'sweetalert2'
+import {mapState, mapGetters, mapMutations} from 'vuex'
 
 export default {
   name: 'pomodoro-timer',
   components: {},
   props: {
-    projects: {},
     user: Object
   },
   data() {
     return {
-      timerBegun: null,
       now: Date.now(),
-
-      currentProject: '日常瑣事',
-      editingTime: false,
-      workMinutes: 1,
-      cyclePassed: 0,
-      perCycle: 4
+      editingTime: false
     }
   },
   computed: {
+    ...mapState({
+      pomoSess: state => state.pomoSession,
+      projects: state => state.projects
+    }),
+    ...mapGetters({isWorkCycle: 'isWorkCycle', intervalTimer: 'currentTimerSecondsLeft'}),
+    currentTimerSecondsLeft() {
+      const timer = this.pomoSess.timerBegun;
+      const timePassed = (this.now - timer) / 1000
+      if (timer) {
+        const timeLeft = Math.floor(this.intervalTimer - timePassed)
+        console.log("Tick ", timeLeft)
+        this.isTimeout()
+        return timeLeft >= 0 ? timeLeft : 0
+      } else {
+        return Math.floor(this.intervalTimer)
+      }
+    },
     totalPomodoro() {
       return Object.values(this.projects).reduce((o, n) => o + n.pomodoro, 0)
     },
     timerRunning() {
-      return this.timerBegun !== null
+      return this.pomoSess.timerBegun !== null
     },
-    currentTimerSecondsLeft() {
-      if (this.timerBegun) {
-        const timePassed = (this.now - this.timerBegun) / 1000
-        console.log(timePassed)
-        const timeLeft = parseInt(this.workMinutes * 60 - timePassed)
-        this.isTimeout()
-
-        return timeLeft
-      } else {
-        return parseInt(this.workMinutes * 60)
-      }
-    }
   },
   methods: {
+    ...mapMutations({
+      setPomoSess: 'updatePomoSession',
+      onPomoDone: 'onPomoDone'
+    }),
     isTimeout() {
       var timeLeft = -1
-      if (this.timerBegun) {
-        const timePassed = (this.now - this.timerBegun) / 1000
-        timeLeft = parseInt(this.workMinutes * 60 - timePassed)
+      const begun = this.pomoSess.timerBegun;
+      if (begun) {
+        const timePassed = (this.now - begun) / 1000
+        const workSecs = this.intervalTimer;
+        timeLeft = Math.floor(workSecs - timePassed)
       } else {
         return false
       }
 
       const timeout = timeLeft < 0
       if (timeout) {
-        console.log("Stop Timer")
-        this.timerBegun = null
-        const newProjects = {...this.projects}
-        const currentProjectObject = newProjects[this.currentProject]
-        if (currentProjectObject) {
-          if (newProjects[this.currentProject].pomodoro === 1) {
-            swal.fire({
-              icon: '',
-              title: '',
-                text: '這裡搜集的番茄會顯示在任務列表中～',
-              confirmButtonText:
-                  '確定',
-            })
-          }
-          newProjects[this.currentProject].pomodoro += 1
-          this.$emit('update:projects', newProjects)
-        } else {
-          console.error("Project name not found!")
-        }
-        this.cyclePassed += 1
+        this.onPomoDone()
       }
       return timeout
     },
     switchTimer() {
       console.log("Switch Timer")
-      if (!this.timerRunning) {
-        this.timerBegun = Date.now()
-      } else {
-        this.timerBegun = null
-      }
+      this.setPomoSess({timerBegun: this.timerRunning ? null : Date.now()})
     },
     switchProject({key}) {
       this.currentProject = key
