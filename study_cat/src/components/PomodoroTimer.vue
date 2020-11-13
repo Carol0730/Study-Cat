@@ -2,10 +2,10 @@
   div
     //a 計時任務：
     a-dropdown.w-50.p-3
-      a.ant-dropdown-link {{pomoSess.currentProject}}
+      a.ant-dropdown-link.font-weight-bold {{pomoSess.currentProject}}
         a-icon(type="down")
       a-menu(slot="overlay")
-        a-menu-item(v-for="p in Object.values(projects)" :key="p.name" :value="p.name" @click="switchProject") {{p.name}}
+        a-menu-item.font-weight-bold(v-for="p in Object.values(projects)" :key="p.name" :value="p.name" @click="switchProject") {{p.name}}
     br
     p
       img(v-if="isWorkCycle === true" src="@/assets/work_pomodoro.png" width="300" height="300")

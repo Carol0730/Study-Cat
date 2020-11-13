@@ -2,10 +2,10 @@
   div.container.d-flex.justify-content-center.bg-white
     div.w-100(style="max-width:400px")
       a-dropdown.w-50
-        a.ant-dropdown-link {{browsingSubject}}
+        a.ant-dropdown-link.font-weight-bold {{browsingSubject}}
           a-icon(type="down")
         a-menu(slot="overlay")
-          a-menu-item(v-for="p in Object.values(projects)" :key="p.name" :value="p.name" @click="switchProject") {{p.name}}
+          a-menu-item.font-weight-bold(v-for="p in Object.values(projects)" :key="p.name" :value="p.name" @click="switchProject") {{p.name}}
 
       br
       br

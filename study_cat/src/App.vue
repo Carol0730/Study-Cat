@@ -55,10 +55,10 @@ export default {
   line-height: 36px;
   cursor: pointer;
   color: #76643E !important;
-  font-size: 14px;
+  font-size: 16px;
   text-align: center;
   text-decoration: none !important;
-  font-weight: bold;
+  font-weight:bolder;
   border: 2px solid transparent;
 }
 .nav-btn-active {
@@ -70,6 +70,7 @@ export default {
 
 .button {
   border-radius: 16px;
+  font-weight: bold;
   background-color: #FBE9C6;
   border: 2px solid #AB9872;
   color: #76643E;
