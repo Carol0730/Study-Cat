@@ -103,8 +103,24 @@ export default {
       return timeout
     },
     switchTimer() {
+      const _this = this
       console.log("Switch Timer")
-      this.setPomoSess({timerBegun: this.timerRunning ? null : Date.now()})
+      if (this.timerRunning) {
+        swal.fire({
+          title: '',
+          icon: "warning",
+          html: '確定要放棄嗎？半途而廢就搜集不到這顆蕃茄囉！',
+          showCloseButton: true,
+          showCancelButton: true,
+          focusConfirm: false,
+          confirmButtonText: '放棄',
+          cancelButtonText: '繼續專注'
+        }).then(function (result) {
+          if (result.isConfirmed) _this.setPomoSess({timerBegun: null})
+        })
+      } else {
+        this.setPomoSess({timerBegun: Date.now()})
+      }
     },
     switchProject({key}) {
       this.setPomoSess({currentProject: key})
