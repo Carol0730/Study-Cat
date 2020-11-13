@@ -42,9 +42,9 @@ export default {
       if(this.firstTimeAddProject){
         this.firstTimeAddProject = false
         swal.fire({
-          icon: '',
+          icon: 'info',
           title: '',
-          html: '這裏新增的任務可以在<b>番茄鐘</b>、<b>討論版</b>以及<b>筆記</b>中選取喔！',
+          html: '新增的任務可以在<b>番茄鐘</b>及<b>討論版/筆記</b>中選取喔！',
           confirmButtonText:
               '確定',
         })

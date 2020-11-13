@@ -30,6 +30,8 @@
     div(v-if="!timerRunning")
       .button(@click="editingTime = !editingTime") {{editingTime ? '調整完成':'調整時間'}}
       .button(@click="submitt") 儲存
+    button(id="demo3" @click="showAlert")
+
 </template>
 <script>
 import swal from 'sweetalert2'
@@ -90,11 +92,11 @@ export default {
         const newProjects = {...this.projects}
         const currentProjectObject = newProjects[this.currentProject]
         if (currentProjectObject) {
-          if (newProjects[this.currentProject].pomodoro === 1) {
+          if (newProjects[this.currentProject].pomodoro === 0) {
             swal.fire({
-              icon: '',
+              icon: 'success',
               title: '',
-                text: '這裡搜集的番茄會顯示在任務列表中～',
+              html: '恭喜你搜集到第一顆番茄！右下角小番茄是<b>今日搜集</b>的番茄顆數，番茄也會依照科目顯示在<b>任務列表</b>～',
               confirmButtonText:
                   '確定',
             })
@@ -147,11 +149,17 @@ export default {
     },
     showAlert() {
       swal.fire({
-        icon: '',
         title: '',
-        text: '這裡搜集的番茄會顯示在目標列表中～',
+        icon: 'warning',
+        html:
+            '確定要離開嗎？半途而廢就搜集不到這顆番茄了喔！' ,
+        showCloseButton: true,
+        showCancelButton: true,
+        focusConfirm: false,
         confirmButtonText:
             '確定',
+        cancelButtonText:
+            '取消',
       })
     }
   },
