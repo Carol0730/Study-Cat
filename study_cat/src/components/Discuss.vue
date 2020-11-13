@@ -42,9 +42,9 @@
               a-card {{comment.content}}
 
 
-          a-textarea( v-model="sendingComment" placeholder="你的評論..." :autoSize="true")
-          button.sendC(type="link" @click="addComment(discuss)") 送出評論
-            a-icon(type="enter")
+        a-textarea( v-model="discuss.commentDraft" placeholder="你的評論..." :autoSize="true")
+        button.sendC(type="link" @click="addComment(discuss)") 送出評論
+          a-icon(type="enter")
       div.position-relative.mt-3
         a-textarea( v-model="sendingDiscussContent" placeholder="縮縮你的問題..." :autoSize="true")
         button.sendQ(type="link" @click="addDiscuss") 送出問題
@@ -79,6 +79,7 @@ export default {
             author: '無名氏',
             star: ["a"],
             content: '什麼是微分？',
+            commentDraft: '',
             comments: [
               {author: "Annoy", content: "先別管微分了，你聽過積分嗎？"}
             ]
@@ -90,6 +91,7 @@ export default {
             author: '無名氏',
             star: ["a"],
             content: '現代文學史的演進史',
+            commentDraft: '',
             comments: [
               {author: "Annoy", content: "標題黨"}
             ]
@@ -139,10 +141,10 @@ export default {
     },
     addComment(discuss){
       discuss.comments.push({
-        content: this.sendingComment,
-            author: this.user.name,
+        content: discuss.commentDraft,
+        author: this.user.name,
       })
-      this.sendingComment = ''
+      discuss.commentDraft = ''
     },
     switchProject({key}){
       this.browsingSubject = key

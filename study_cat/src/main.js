@@ -23,7 +23,8 @@ Vue.use(Antd);
 
 Vue.config.productionTip = false;
 
-
+var pomodoroDoneAudio = new Audio(require('@/assets/done_sound.mp3'))
+var restDoneAudio = new Audio(require('@/assets/rest_done_sound.mp3'))
 // 4. 创建和挂载根实例。
 // 记得要通过 router 配置参数注入路由，
 // 从而让整个应用都有路由功能
@@ -68,18 +69,35 @@ const store = new Vuex.Store({
             state.pomoSession.timerBegun = null
             state.pomoSession.cyclePassed += 1
             console.log("Stop Timer")
-            if (state.pomoSession.cyclePassed % 2 == 0) return null
+            if (state.pomoSession.cyclePassed % 2 == 0) {
+                restDoneAudio.play()
+                swal.fire({
+                    icon: 'success',
+                    title: '',
+                    html: '休息結束囉！再接再厲！',
+                    confirmButtonText: '確定',
+                }).then(function () {
+                    restDoneAudio.pause();
+                    restDoneAudio.currentTime = 0
+                })
+
+                return null
+            }
 
             const currentProjectObject = state.projects[state.pomoSession.currentProject]
             if (currentProjectObject) {
                 var newProjects = {[currentProjectObject.name]: currentProjectObject}
                 newProjects[currentProjectObject.name].pomodoro += 1
+                pomodoroDoneAudio.play();
                 if (newProjects[currentProjectObject.name].pomodoro === 1) {
                     swal.fire({
                         icon: 'success',
                         title: '',
                         html: '恭喜你收集到第一顆番茄！右下角小番茄是<b>今日總共收集的番茄</b>～科目蒐集到的番茄可以在<b>任務</b>中查詢喔',
                         confirmButtonText: '確定',
+                    }).then(function () {
+                        pomodoroDoneAudio.pause();
+                        pomodoroDoneAudio.currentTime = 0
                     })
                 } else {
                     swal.fire({
@@ -87,6 +105,9 @@ const store = new Vuex.Store({
                         title: '',
                         html: '恭喜你又收集到一顆番茄！為自己掌聲鼓勵！',
                         confirmButtonText: '確定',
+                    }).then(function () {
+                        pomodoroDoneAudio.pause();
+                        pomodoroDoneAudio.currentTime = 0
                     })
 
                 }
