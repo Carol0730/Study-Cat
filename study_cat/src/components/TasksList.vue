@@ -19,10 +19,10 @@
         button.buttonAdd(@click="addProjects" icon="plus" shape="circle") ＋
 </template>
 <script>
+import {mapState, mapMutations} from 'vuex'
 export default {
   name: 'tasks-list',
   props: {
-    projects: {},
     pomodoroStatus: {}
   },
   data() {
@@ -32,14 +32,20 @@ export default {
       editingProjectNewName: ''
     }
   },
+  computed: {
+    ...mapState({
+      projects: state => state.projects
+    }),
+  },
   methods: {
+    ...mapMutations(['addProject']),
     addProjects() {
       const projectName = this.newProjectName
       const newProject = {
         name: projectName,
         pomodoro: 0,
       }
-      this.$emit('update:projects', {...(this.projects), [projectName]: newProject})
+      this.addProject(newProject)
       this.newProjectName = ''
     },
     setEditingProjects(project) {

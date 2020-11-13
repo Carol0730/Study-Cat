@@ -86,6 +86,9 @@ const store = new Vuex.Store({
                 console.error("Project name not found!")
             }
 
+        },
+        addProject(state, project) {
+            Vue.set(state.projects, project.name, project)
         }
     }
 })

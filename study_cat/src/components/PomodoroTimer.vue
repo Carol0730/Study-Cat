@@ -107,7 +107,7 @@ export default {
       this.setPomoSess({timerBegun: this.timerRunning ? null : Date.now()})
     },
     switchProject({key}) {
-      this.currentProject = key
+      this.setPomoSess({currentProject: key})
     },
     submitt() {
       const data = {
