@@ -11,14 +11,14 @@
       img(src="@/assets/Group 29.png" width="300" height="300")
       .tomato-container
         .p1
-          span
-            p(style="font-size:100px;display:inline").font-weight-bold {{timerRunning ? Math.floor(timeLeft / 60) : workMinutes}}
-            p(style="font-size:32px;display:inline") {{(timerRunning?(timeLeft % 60).toString().padStart(2, '0'):'00')}}
+          span()
+            p(@click="workMinutes = 1/60" style="font-size:100px;display:inline").font-weight-bold {{Math.floor(timeLeft / 60)}}
+            p(style="font-size:32px;display:inline") {{(timeLeft % 60).toString().padStart(2, '0')}}
         p(style="opacity:0" ) haha
         //haha 不準刪
         .p2.font-weight-bold {{totalPomodoro}}
       a-space
-        img(v-for="index in perCycle" :key="index" :style="{opacity: (index >= cyclePassed ? 0.2:1)}" src="@/assets/Group 24.png" width="36")
+        img(v-for="index in perCycle" :key="index" :style="{opacity: (index > cyclePassed ? 0.2:1)}" src="@/assets/Group 24.png" width="36")
         //img(v-for="index in perCycle-cyclePassed" :key="index" src="@/assets/Group 24.png" width="30" )
 
     a-space(v-if="editingTime")
@@ -44,6 +44,7 @@ export default {
       timeLeft: 3,
       timerRunning: false,
       timer: null,
+
       currentProject: '日常瑣事',
       editingTime: false,
       workMinutes: 1,
@@ -69,13 +70,15 @@ export default {
         this.timer = setInterval(() => {
           this.timeLeft -= 1
           console.log("Tick", this.timeLeft)
-          if (this.timeLeft < 0) {
+
+          let timeout = this.timeLeft < 0
+          if (timeout) {
             console.log("Stop Timer")
             this.timeLeft = this.workMinutes * 60
             clearInterval(this.timer)
             this.timerRunning = !(this.timerRunning)
             const newProjects = {...this.projects}
-            if(newProjects[this.currentProject].pomodoro === 1){
+            if (newProjects[this.currentProject].pomodoro === 1) {
               swal.fire({
                 icon: '',
                 title: '',
@@ -132,6 +135,9 @@ export default {
             '確定',
       })
     }
+  },
+  mounted() {
+    this.timeLeft = this.workMinutes * 60
   }
 }
 </script>

@@ -22,7 +22,8 @@
 export default {
   name: 'tasks-list',
   props: {
-    projects: {}
+    projects: {},
+    pomodoroStatus: {}
   },
   data() {
     return {
