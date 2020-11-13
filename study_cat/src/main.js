@@ -62,6 +62,7 @@ const store = new Vuex.Store({
         nextPomo(state) {
             state.pomoSession.cyclePassed += 1
             state.pomoSession.cyclePassed %= state.pomoSession.perCycle * 2
+            state.pomoSession.timerBegun = null
         },
         onPomoDone(state) {
             state.pomoSession.timerBegun = null
