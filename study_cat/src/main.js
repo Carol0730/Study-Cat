@@ -75,11 +75,19 @@ const store = new Vuex.Store({
                 newProjects[currentProjectObject.name].pomodoro += 1
                 if (newProjects[currentProjectObject.name].pomodoro === 1) {
                     swal.fire({
-                        icon: '',
+                        icon: 'success',
                         title: '',
-                        text: '這裡搜集的番茄會顯示在任務列表中～',
+                        html: '恭喜你收集到第一顆番茄！右下角小番茄是<b>今日總共收集的番茄</b>～科目蒐集到的番茄可以在<b>任務</b>中查詢喔',
                         confirmButtonText: '確定',
                     })
+                } else {
+                    swal.fire({
+                        icon: 'success',
+                        title: '',
+                        html: '恭喜你又收集到一顆番茄！為自己掌聲鼓勵！',
+                        confirmButtonText: '確定',
+                    })
+
                 }
                 state.projects = newProjects
             } else {
