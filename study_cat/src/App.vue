@@ -5,8 +5,7 @@
     div(style="max-width: 300px").d-flex.w-100.mx-auto.mb-3
       router-link.nav-btn(to="/pomodoro" :class="{'nav-btn-active':$router.currentRoute.path==='/pomodoro'}") 番茄鐘
       router-link.nav-btn(to="/projects" :class="{'nav-btn-active':$router.currentRoute.path==='/projects'}") 任務
-      router-link.nav-btn(to="/discuss" :class="{'nav-btn-active':$router.currentRoute.path==='/discuss'}") 討論版
-      router-link.nav-btn(to="/coop-note" :class="{'nav-btn-active':$router.currentRoute.path==='/coop-note'}") 共筆
+      router-link.nav-btn(to="/discuss" :class="{'nav-btn-active':$router.currentRoute.path==='/discuss'}") 筆記/討論版
 
     router-view(:projects.sync="projects" :user="user")
 
