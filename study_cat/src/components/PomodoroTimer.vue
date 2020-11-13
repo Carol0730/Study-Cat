@@ -21,9 +21,9 @@
         //haha 不準刪
         .p2.font-weight-bold {{totalPomodoro}}
       a-space(align="baseline")
-        span(v-for="index in pomoSess.perCycle * 2" :key="index" :style="{opacity: (index > pomoSess.cyclePassed ? 0.1:1)}" )
+        span(v-for="index in pomoSess.perCycle * 2" :key="index" :style="{opacity: (index > pomoSess.cyclePassed + 1 ? 0.1:1)}" )
           img(v-if="index % 2 === 1" src="@/assets/small_work_pomo.png" width="36")
-          img(v-else                src="@/assets/rest_pomodoro.png" width="24")
+          img(v-else                 src="@/assets/rest_pomodoro.png" width="24")
         //img(v-for="index in perCycle-cyclePassed" :key="index" src="@/assets/Group 24.png" width="30" )
 
     a-space(v-if="editingTime")
@@ -32,7 +32,7 @@
       .buttonStart(v-if="isWorkCycle" @click="switchTimer") {{timerRunning ? '放棄' : '開始！'}}
       a-space(v-else)
         .buttonStart(@click="switchTimer") {{timerRunning ? '放棄' : '休息去！'}}
-        .buttonStart(@click="setPomoSess({cyclePassed:pomoSess.cyclePassed+1})") 跳過休息
+        .buttonStart(@click="nextPomo") 跳過休息
 
     div(v-if="!timerRunning")
       .button(@click="editingTime = !editingTime") {{editingTime ? '調整完成':'調整時間'}}
@@ -82,7 +82,8 @@ export default {
   methods: {
     ...mapMutations({
       setPomoSess: 'updatePomoSession',
-      onPomoDone: 'onPomoDone'
+      onPomoDone: 'onPomoDone',
+      nextPomo: 'nextPomo'
     }),
     isTimeout() {
       var timeLeft = -1
