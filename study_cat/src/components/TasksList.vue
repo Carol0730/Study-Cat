@@ -17,8 +17,12 @@
       div.d-flex.align-items-center
         input.input.flex-grow-1(v-model="newProjectName" placeholder="想新增什麼科目呢？" @keyup.enter="addProjects")
         button.buttonAdd(@click="addProjects" icon="plus" shape="circle") ＋
+
+      button(id="demo2" @click="showAlert")
 </template>
 <script>
+import swal from "sweetalert2";
+
 export default {
   name: 'tasks-list',
   props: {
@@ -38,18 +42,27 @@ export default {
         name: projectName,
         pomodoro: 0,
       }
+      if(newProject[this.newProjectName] === 1){
+        swal.fire({
+          icon: '',
+          title: '',
+          text: '這裡搜集的番茄會顯示在任務列表中～',
+          confirmButtonText:
+              '確定',
+        })
+      }
       this.$emit('update:projects', {...(this.projects), [projectName]: newProject})
       this.newProjectName = ''
     },
     setEditingProjects(project) {
-      if(this.editingProjectName){
+      if (this.editingProjectName) {
         this.commitEdit()
       }
       this.editingProjectName = project.name
       this.editingProjectNewName = project.name
     },
     commitEdit() {
-      if(this.editingProjectName !== this.editingProjectNewName){
+      if (this.editingProjectName !== this.editingProjectNewName) {
         const newProjects = {...this.projects}
         newProjects[this.editingProjectNewName] = newProjects[this.editingProjectName]
         newProjects[this.editingProjectNewName].name = this.editingProjectNewName
@@ -58,10 +71,19 @@ export default {
       }
       this.editingProjectName = null
     },
-    deleteProject(project){
+    deleteProject(project) {
       const newProjects = {...this.projects}
       delete newProjects[project.name]
       this.$emit('update:projects', newProjects)
+    },
+    showAlert() {
+      swal.fire({
+        icon: '',
+        title: '',
+        text: '這裡搜集的番茄會顯示在目標列表中～',
+        confirmButtonText:
+            '確定',
+      })
     }
   }
 }
