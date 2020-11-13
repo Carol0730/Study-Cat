@@ -6,27 +6,27 @@
           p.m-0.pl-2.text-left(v-if="editingProjectName!==item.name") {{item.name}}
           input.input1.w-100(v-else v-model="editingProjectNewName" @keyup.enter="commitEdit")
         div.ml-2(v-if="editingProjectName!==item.name")
-          span.containerTomatoNum
+          span(v-if="!editingProject").containerTomatoNum
             span.pTomato {{item.pomodoro}}
             img(src="@/assets/little tomato.png" width="30" height="30")
-          button.buttonEdit(@click="setEditingProjects(item)") 修改
-          button.buttonDelete(@click="deleteProject(item)") 刪除
+          div(v-else)
+            button.buttonEdit(@click="setEditingProjects(item)") 修改
+            button.buttonDelete(@click="deleteProject(item)") 刪除
         div(v-else)
           button.buttonEdit(@click="commitEdit") 完成
 
       div.d-flex.align-items-center
         input.input.flex-grow-1(v-model="newProjectName" placeholder="想新增什麼科目呢？" @keyup.enter="addProjects")
         button.buttonAdd(@click="addProjects" icon="plus" shape="circle") ＋
-
-
+        button.buttonAdd(@click="editingProject=!editingProject" icon="plus" shape="circle") {{editingProject?'完成':'編輯'}}
 </template>
 <script>
 import swal from "sweetalert2";
+import {mapState, mapMutations} from 'vuex'
 
 export default {
   name: 'tasks-list',
   props: {
-    projects: {},
     pomodoroStatus: {}
   },
   data() {
@@ -34,10 +34,17 @@ export default {
       newProjectName: '',
       editingProjectName: null,
       editingProjectNewName: '',
+      editingProject: false,
       firstTimeAddProject: true
     }
   },
+  computed: {
+    ...mapState({
+      projects: state => state.projects
+    }),
+  },
   methods: {
+    ...mapMutations(['addProject']),
     addProjects() {
       if(this.firstTimeAddProject){
         this.firstTimeAddProject = false
@@ -54,7 +61,7 @@ export default {
         name: projectName,
         pomodoro: 0,
       }
-      this.$emit('update:projects', {...(this.projects), [projectName]: newProject})
+      this.addProject(newProject)
       this.newProjectName = ''
     },
     setEditingProjects(project) {
@@ -78,15 +85,6 @@ export default {
       const newProjects = {...this.projects}
       delete newProjects[project.name]
       this.$emit('update:projects', newProjects)
-    },
-    showAlert() {
-      swal.fire({
-        icon: '',
-        title: '',
-        text: '這裏新增的任務可以在番茄鐘、討論版以及筆記中選取喔！',
-        confirmButtonText:
-            '確定',
-      })
     }
   }
 }
