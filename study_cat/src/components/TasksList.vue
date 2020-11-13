@@ -6,17 +6,19 @@
           p.m-0.pl-2.text-left(v-if="editingProjectName!==item.name") {{item.name}}
           input.input1.w-100(v-else v-model="editingProjectNewName" @keyup.enter="commitEdit")
         div.ml-2(v-if="editingProjectName!==item.name")
-          span.containerTomatoNum
+          span(v-if="!editingProject").containerTomatoNum
             span.pTomato {{item.pomodoro}}
             img(src="@/assets/little tomato.png" width="30" height="30")
-          button.buttonEdit(@click="setEditingProjects(item)") 修改
-          button.buttonDelete(@click="deleteProject(item)") 刪除
+          div(v-else)
+            button.buttonEdit(@click="setEditingProjects(item)") 修改
+            button.buttonDelete(@click="deleteProject(item)") 刪除
         div(v-else)
           button.buttonEdit(@click="commitEdit") 完成
 
       div.d-flex.align-items-center
         input.input.flex-grow-1(v-model="newProjectName" placeholder="想新增什麼科目呢？" @keyup.enter="addProjects")
         button.buttonAdd(@click="addProjects" icon="plus" shape="circle") ＋
+        button.buttonAdd(@click="editingProject=!editingProject" icon="plus" shape="circle") {{editingProject?'完成':'編輯'}}
 </template>
 <script>
 import {mapState, mapMutations} from 'vuex'
@@ -29,7 +31,8 @@ export default {
     return {
       newProjectName: '',
       editingProjectName: null,
-      editingProjectNewName: ''
+      editingProjectNewName: '',
+      editingProject: false
     }
   },
   computed: {
