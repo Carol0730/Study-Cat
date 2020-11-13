@@ -90,7 +90,7 @@ export default {
   width: 50px;
   height: 30px;
   border-radius: 10px;
-  color:#76643E;
+  color:#AB9872;
   /*border: #8B6C2A;*/
   padding: 5px;
   margin: 2px 4px;
@@ -103,6 +103,7 @@ export default {
 
 .input {
   /*width: 40%;*/
+  color:#76643E;
   height: 15px;
   padding: 16px 16px;
   margin: 24px 0;

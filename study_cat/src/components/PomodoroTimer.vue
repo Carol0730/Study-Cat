@@ -30,6 +30,7 @@
       .button(@click="submitt") 儲存
 </template>
 <script>
+import swal from 'sweetalert2'
 
 export default {
   name: 'pomodoro-timer',
@@ -74,6 +75,15 @@ export default {
             clearInterval(this.timer)
             this.timerRunning = !(this.timerRunning)
             const newProjects = {...this.projects}
+            if(newProjects[this.currentProject].pomodoro === 1){
+              swal.fire({
+                icon: '',
+                title: '',
+                text: '這裡搜集的番茄會顯示在目標列表中～',
+                confirmButtonText:
+                    '確定',
+              })
+            }
             newProjects[this.currentProject].pomodoro += 1
             this.cyclePassed += 1
             this.$emit('update:projects', newProjects)
@@ -84,7 +94,7 @@ export default {
         clearInterval(this.timer)
       }
     },
-    switchProject({key}){
+    switchProject({key}) {
       this.currentProject = key
     },
     submitt() {
@@ -112,6 +122,15 @@ export default {
           }).then(res => res.json())
           .catch(error => console.error('Error: ', error))
           .then(response => console.log('Success: ', response))
+    },
+    showAlert() {
+      swal.fire({
+        icon: '',
+        title: '',
+        text: '這裡搜集的番茄會顯示在目標列表中～',
+        confirmButtonText:
+            '確定',
+      })
     }
   }
 }
