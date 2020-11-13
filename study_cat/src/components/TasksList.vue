@@ -44,9 +44,9 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations(['addProject']),
+    ...mapMutations(['addProject', 'updateProjects']),
     addProjects() {
-      if(this.firstTimeAddProject){
+      if (this.firstTimeAddProject) {
         this.firstTimeAddProject = false
         swal.fire({
           icon: 'info',
@@ -77,14 +77,14 @@ export default {
         newProjects[this.editingProjectNewName] = newProjects[this.editingProjectName]
         newProjects[this.editingProjectNewName].name = this.editingProjectNewName
         delete newProjects[this.editingProjectName]
-        this.$emit('update:projects', newProjects)
+        this.updateProjects(newProjects)
       }
       this.editingProjectName = null
     },
     deleteProject(project) {
       const newProjects = {...this.projects}
       delete newProjects[project.name]
-      this.$emit('update:projects', newProjects)
+      this.updateProjects(newProjects)
     }
   }
 }
