@@ -135,7 +135,7 @@ export default {
           title: '',
           icon: '',
           html:
-              '確認解決這題問題了嗎？' ,
+              '確認解決這題問題了嗎？',
           showCloseButton: true,
           showCancelButton: true,
           focusConfirm: false,

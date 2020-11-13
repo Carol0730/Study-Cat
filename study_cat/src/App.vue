@@ -2,7 +2,7 @@
   div#app
     p
       img(src="@/assets/Group 26.png" width="208" height="61")
-    div(style="max-width: 300px").d-flex.w-100.mx-auto.mb-3
+    div.mx-auto(class="d-flex justify-content-center" style="max-width: 300px").mb-3
       router-link.nav-btn(to="/pomodoro" :class="{'nav-btn-active':$router.currentRoute.path==='/pomodoro'}") 番茄鐘
       router-link.nav-btn(to="/projects" :class="{'nav-btn-active':$router.currentRoute.path==='/projects'}") 任務
       router-link.nav-btn(to="/discuss"  :class="{'nav-btn-active':$router.currentRoute.path==='/discuss'}" ) 筆記/討論
@@ -156,4 +156,5 @@ export default {
 .fab-btn, .fab-btn:hover, .fab-btn:focus {
   background-color: #DBE9F3
 }
+
 </style>

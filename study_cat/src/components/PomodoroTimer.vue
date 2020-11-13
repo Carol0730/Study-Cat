@@ -28,6 +28,8 @@
     div(v-if="!timerRunning")
       .button(@click="editingTime = !editingTime") {{editingTime ? '調整完成':'調整時間'}}
       .button(@click="submitt") 儲存
+
+    button(id="demo2" @click="showAlert")
 </template>
 <script>
 import swal from 'sweetalert2'
@@ -79,7 +81,7 @@ export default {
               swal.fire({
                 icon: '',
                 title: '',
-                text: '這裡搜集的番茄會顯示在目標列表中～',
+                text: '這裡搜集的番茄會顯示在任務列表中～',
                 confirmButtonText:
                     '確定',
               })
