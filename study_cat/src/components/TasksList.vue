@@ -26,7 +26,8 @@ import swal from "sweetalert2";
 export default {
   name: 'tasks-list',
   props: {
-    projects: {}
+    projects: {},
+    pomodoroStatus: {}
   },
   data() {
     return {

@@ -7,7 +7,7 @@
       router-link.nav-btn(to="/projects" :class="{'nav-btn-active':$router.currentRoute.path==='/projects'}") 任務
       router-link.nav-btn(to="/discuss"  :class="{'nav-btn-active':$router.currentRoute.path==='/discuss'}" ) 筆記/討論
     a-divider
-    router-view(:projects.sync="projects" :user="user")
+    router-view(:key="$route.fullPath" :projects.sync="projects" :user="user")
 
     div.d-flex.flex-column.fab-buttons
       a-button(type="circle" icon="global" size="large").mb-2.fab-btn
@@ -34,9 +34,9 @@ export default {
   data() {
     return {
       section: 'discuss',
-      projects: {'無任務': {name: '無任務', pomodoro: 0}},
-      user:{
-        name:'無名氏'
+      projects: {'日常瑣事': {name: '日常瑣事', pomodoro: 0}},
+      user: {
+        name: '無名氏'
       },
       showSetting: false
     }
@@ -118,8 +118,8 @@ export default {
   position: relative;
 }
 .p1 {
-  position:absolute;
-  top: -600%;
+  position: absolute;
+  top: -650%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 36px;

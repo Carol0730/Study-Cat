@@ -11,14 +11,16 @@
       img(src="@/assets/Group 29.png" width="300" height="300")
       .tomato-container
         .p1
-          span
-            p(style="font-size:100px;display:inline").font-weight-bold {{timerRunning ? Math.floor(timeLeft / 60) : workMinutes}}
-            p(style="font-size:32px;display:inline") {{(timerRunning?(timeLeft % 60).toString().padStart(2, '0'):'00')}}
+          span()
+            p(@click="workMinutes = 1/60" style="font-size:100px;display:inline").font-weight-bold
+              | {{Math.floor(currentTimerSecondsLeft / 60)}}
+            p(style="font-size:32px;display:inline")
+              | {{(currentTimerSecondsLeft % 60).toString().padStart(2, '0')}}
         p(style="opacity:0" ) haha
         //haha 不準刪
         .p2.font-weight-bold {{totalPomodoro}}
       a-space
-        img(v-for="index in perCycle" :key="index" :style="{opacity: (index >= cyclePassed ? 0.2:1)}" src="@/assets/Group 24.png" width="36")
+        img(v-for="index in perCycle" :key="index" :style="{opacity: (index > cyclePassed ? 0.2:1)}" src="@/assets/Group 24.png" width="36")
         //img(v-for="index in perCycle-cyclePassed" :key="index" src="@/assets/Group 24.png" width="30" )
 
     a-space(v-if="editingTime")
@@ -28,8 +30,6 @@
     div(v-if="!timerRunning")
       .button(@click="editingTime = !editingTime") {{editingTime ? '調整完成':'調整時間'}}
       .button(@click="submitt") 儲存
-
-    button(id="demo2" @click="showAlert")
 </template>
 <script>
 import swal from 'sweetalert2'
@@ -43,9 +43,9 @@ export default {
   },
   data() {
     return {
-      timeLeft: 3,
-      timerRunning: false,
-      timer: null,
+      timerBegun: null,
+      now: Date.now(),
+
       currentProject: '日常瑣事',
       editingTime: false,
       workMinutes: 1,
@@ -57,43 +57,63 @@ export default {
     totalPomodoro() {
       return Object.values(this.projects).reduce((o, n) => o + n.pomodoro, 0)
     },
-    currentPomodoro() {
-      const currentProject = this.projects[this.currentProject] ?? {pomodoro: 0}
-      return currentProject.pomodoro
+    timerRunning() {
+      return this.timerBegun !== null
+    },
+    currentTimerSecondsLeft() {
+      if (this.timerBegun) {
+        const timePassed = (this.now - this.timerBegun) / 1000
+        console.log(timePassed)
+        const timeLeft = parseInt(this.workMinutes * 60 - timePassed)
+        this.isTimeout()
+
+        return timeLeft
+      } else {
+        return parseInt(this.workMinutes * 60)
+      }
     }
   },
   methods: {
-    switchTimer() {
-      this.timerRunning = !(this.timerRunning)
-      console.log("Switch Timer")
-      if (this.timerRunning) {
-        this.timeLeft = this.workMinutes * 60
-        this.timer = setInterval(() => {
-          this.timeLeft -= 1
-          console.log("Tick", this.timeLeft)
-          if (this.timeLeft < 0) {
-            console.log("Stop Timer")
-            this.timeLeft = this.workMinutes * 60
-            clearInterval(this.timer)
-            this.timerRunning = !(this.timerRunning)
-            const newProjects = {...this.projects}
-            if(newProjects[this.currentProject].pomodoro === 1){
-              swal.fire({
-                icon: '',
-                title: '',
-                text: '這裡搜集的番茄會顯示在任務列表中～',
-                confirmButtonText:
-                    '確定',
-              })
-            }
-            newProjects[this.currentProject].pomodoro += 1
-            this.cyclePassed += 1
-            this.$emit('update:projects', newProjects)
-          }
-        }, 1000)
+    isTimeout() {
+      var timeLeft = -1
+      if (this.timerBegun) {
+        const timePassed = (this.now - this.timerBegun) / 1000
+        timeLeft = parseInt(this.workMinutes * 60 - timePassed)
       } else {
-        this.timeLeft = this.workMinutes * 60
-        clearInterval(this.timer)
+        return false
+      }
+
+      const timeout = timeLeft < 0
+      if (timeout) {
+        console.log("Stop Timer")
+        this.timerBegun = null
+        const newProjects = {...this.projects}
+        const currentProjectObject = newProjects[this.currentProject]
+        if (currentProjectObject) {
+          if (newProjects[this.currentProject].pomodoro === 1) {
+            swal.fire({
+              icon: '',
+              title: '',
+                text: '這裡搜集的番茄會顯示在任務列表中～',
+              confirmButtonText:
+                  '確定',
+            })
+          }
+          newProjects[this.currentProject].pomodoro += 1
+          this.$emit('update:projects', newProjects)
+        } else {
+          console.error("Project name not found!")
+        }
+        this.cyclePassed += 1
+      }
+      return timeout
+    },
+    switchTimer() {
+      console.log("Switch Timer")
+      if (!this.timerRunning) {
+        this.timerBegun = Date.now()
+      } else {
+        this.timerBegun = null
       }
     },
     switchProject({key}) {
@@ -134,7 +154,16 @@ export default {
             '確定',
       })
     }
-  }
+  },
+  mounted() {
+    this.timeLeft = this.workMinutes * 60
+  },
+  created() {
+    var self = this;
+    setInterval(function () {
+      self.now = Date.now()
+    }, 1000)
+  },
 }
 </script>
 <style>
