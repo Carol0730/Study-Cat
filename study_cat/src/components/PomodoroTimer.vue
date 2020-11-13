@@ -21,8 +21,10 @@
       .button(@click="submitt") 儲存
       //.button(@click="section='setting_time'") 設定
       //setting_time(:projects.sync="projects" v-show="section==='setting_time'")
+    button(id="demo2" @click="showAlert")
 </template>
 <script>
+import swal from 'sweetalert2'
 
 export default {
   name: 'pomodoro-timer',
@@ -36,7 +38,7 @@ export default {
       timeLeft: 3,
       timerRunning: false,
       timer: null,
-      currentProject: '無任務',
+      currentProject: '微積分',
       editingTime: false,
       workMinutes: 25,
     }
@@ -65,6 +67,15 @@ export default {
             clearInterval(this.timer)
             this.timerRunning = !(this.timerRunning)
             const newProjects = {...this.projects}
+            if(newProjects[this.currentProject].pomodoro === 1){
+              swal.fire({
+                icon: '',
+                title: '',
+                text: '這裡搜集的番茄會顯示在目標列表中～',
+                confirmButtonText:
+                    '確定',
+              })
+            }
             newProjects[this.currentProject].pomodoro += 1
             this.$emit('update:projects', newProjects)
           }
@@ -74,7 +85,7 @@ export default {
         clearInterval(this.timer)
       }
     },
-    switchProject({key}){
+    switchProject({key}) {
       this.currentProject = key
     },
     submitt() {
@@ -102,6 +113,15 @@ export default {
           }).then(res => res.json())
           .catch(error => console.error('Error: ', error))
           .then(response => console.log('Success: ', response))
+    },
+    showAlert() {
+      swal.fire({
+        icon: '',
+        title: '',
+        text: '這裡搜集的番茄會顯示在目標列表中～',
+        confirmButtonText:
+            '確定',
+      })
     }
   }
 }
