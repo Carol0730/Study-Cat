@@ -8,7 +8,7 @@
     p
       img(src="@/assets/Group 29.png" width="300" height="300")
       .tomato-container
-        .p1 {{timerRunning ? Math.floor(timeLeft / 60) : workMinutes}} : {{(timerRunning?timeLeft % 60:0)}}
+        .p1 {{timerRunning ? Math.floor(timeLeft / 60) : workMinutes}} : {{(timerRunning?(timeLeft % 60).toString().padStart(2, '0'):'00')}}
         p(style="opacity:0") haha
         //haha 不準刪
         .p2 {{totalPomodoro}}
@@ -38,6 +38,7 @@ export default {
       currentProject: '無任務',
       editingTime: false,
       workMinutes: 25,
+      cyclePassed: 0,
     }
   },
   computed: {

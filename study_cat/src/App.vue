@@ -39,7 +39,7 @@ export default {
       user:{
         name:'無名氏'
       },
-      showSetting:false,
+      showSetting: false
     }
   },
   methods:{
