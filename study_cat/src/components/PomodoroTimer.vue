@@ -28,19 +28,20 @@
 
     a-space(v-if="editingTime")
       a-slider(v-model="pomoSess.workMinutes" :max="60" :min="1" style="width: 300px;")
-    p(v-else)
+    a-space(v-else)
       .buttonStart(v-if="isWorkCycle" @click="switchTimer") {{timerRunning ? '放棄' : '開始！'}}
       a-space(v-else)
         .buttonStart(@click="switchTimer") {{timerRunning ? '放棄' : '休息去！'}}
         .buttonStart(@click="nextPomo") 跳過休息
 
-    div(v-if="!timerRunning")
+    div(v-if="!timerRunning && isWorkCycle")
       .button(@click="editingTime = !editingTime") {{editingTime ? '調整完成':'調整時間'}}
       .button(@click="submitt") 儲存
 </template>
 <script>
 import swal from 'sweetalert2'
 import {mapState, mapGetters, mapMutations} from 'vuex'
+import axios from 'axios'
 
 export default {
   name: 'pomodoro-timer',
@@ -106,18 +107,21 @@ export default {
       const _this = this
       console.log("Switch Timer")
       if (this.timerRunning) {
-        swal.fire({
-          title: '',
-          icon: "warning",
-          html: '確定要放棄嗎？半途而廢就搜集不到這顆蕃茄囉！',
-          showCloseButton: true,
-          showCancelButton: true,
-          focusConfirm: false,
-          confirmButtonText: '放棄',
-          cancelButtonText: '繼續專注'
-        }).then(function (result) {
-          if (result.isConfirmed) _this.setPomoSess({timerBegun: null})
-        })
+        if (this.isWorkCycle) {
+          swal.fire({
+            title: '',
+            icon: "warning",
+            html: '確定要放棄嗎？半途而廢就搜集不到這顆蕃茄囉！',
+            showCancelButton: true,
+            focusConfirm: false,
+            confirmButtonText: '放棄',
+            cancelButtonText: '繼續專注'
+          }).then(function (result) {
+            if (result.isConfirmed) _this.setPomoSess({timerBegun: null})
+          })
+        } else {
+          _this.setPomoSess({timerBegun: null})
+        }
       } else {
         this.setPomoSess({timerBegun: Date.now()})
       }
@@ -138,18 +142,19 @@ export default {
         //對應番茄顆數
       }
       console.log(JSON.stringify(data))
-
-      fetch('https://cors-anywhere.herokuapp.com/https://script.google.com/macros/s/AKfycbyFou-FpZLBIQN5cASfPse1XfCtKcnTJaHh-raHf8b9f6OHyro1/exec',
-          {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: new Headers({
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            })
-          }).then(res => res.json())
-          .catch(error => console.error('Error: ', error))
-          .then(response => console.log('Success: ', response))
+      axios.post('https://cors-anywhere.herokuapp.com/https://docs.google.com/forms/d/e/1FAIpQLSccetvzM7NpL1rEBqHUEikTrvo9jDcFRlrdICze5g8tQy7yUg/formResponse',
+          {'entry.1990721791': 'id', 'entry.880743640': 'obj'})
+      // fetch('https://cors-anywhere.herokuapp.com/https://docs.google.com/forms/d/e/1FAIpQLSccetvzM7NpL1rEBqHUEikTrvo9jDcFRlrdICze5g8tQy7yUg/formResponse',
+      //     {
+      //       method: "POST",
+      //       body: {'entry.1990721791':'id','entry.880743640':'obj'},
+      //       headers: new Headers({
+      //         'Content-Type': 'application/json',
+      //         'Accept': 'application/json'
+      //       })
+      //     }).then(res => res.json())
+      //     .catch(error => console.error('Error: ', error))
+      //     .then(response => console.log('Success: ', response))
     }
   },
   mounted() {
