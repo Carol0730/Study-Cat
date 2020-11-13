@@ -114,6 +114,19 @@ export default {
       console.log("Switch Timer")
       if (!this.timerRunning) {
         this.timerBegun = Date.now()
+        swal.fire({
+          title: '',
+          icon: 'warning',
+          html:
+              '確定要離開嗎？半途而廢就搜集不到這顆番茄了喔！' ,
+          showCloseButton: true,
+          showCancelButton: true,
+          focusConfirm: false,
+          confirmButtonText:
+              '確定',
+          cancelButtonText:
+              '取消',
+        })
       } else {
         this.timerBegun = null
       }
