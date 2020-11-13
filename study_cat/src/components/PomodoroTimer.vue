@@ -150,15 +150,6 @@ export default {
           }).then(res => res.json())
           .catch(error => console.error('Error: ', error))
           .then(response => console.log('Success: ', response))
-    },
-    showAlert() {
-      swal.fire({
-        icon: '',
-        title: '',
-        text: '這裡搜集的番茄會顯示在目標列表中～',
-        confirmButtonText:
-            '確定',
-      })
     }
   },
   mounted() {

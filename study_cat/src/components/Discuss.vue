@@ -49,6 +49,7 @@
         a-textarea( v-model="sendingDiscussContent" placeholder="縮縮你的問題..." :autoSize="true")
         button.sendQ(type="link" @click="addDiscuss") 送出問題
           a-icon(type="enter")
+      button(id="demo3" @click="showAlert")
 
 
 
@@ -146,12 +147,28 @@ export default {
     switchProject({key}){
       this.browsingSubject = key
     },
-    switchDiscussStatus(statusName){
-      this.browsingDiscussStatus = statusName
-      if(statusName == '已解決' && !(this.hintsStatus) ){
+    switchDiscussStatus(status){
+      this.browsingDiscussStatus = status
+      if(status === 'unsolved'){
+          swal.fire({
+            title: '',
+            icon: 'question',
+            html: '確定解決這題問題了嗎？',
+            showCloseButton: true,
+            showCancelButton: true,
+            focusConfirm: false,
+            confirmButtonText:
+                '確定',
+            cancelButtonText:
+                '取消',
+          })
+          // this.hintsStatus = true
+        }
+      },
+      showAlert() {
         swal.fire({
+          icon: 'question',
           title: '',
-          icon: '',
           html:
               '確認解決這題問題了嗎？',
           showCloseButton: true,
@@ -162,10 +179,8 @@ export default {
           cancelButtonText:
               '取消',
         })
-        this.hintsStatus = true
       }
-    }
-  }
+    },
 }
 </script>
 

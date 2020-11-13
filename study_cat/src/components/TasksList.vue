@@ -21,7 +21,9 @@
         button.buttonAdd(@click="editingProject=!editingProject" icon="plus" shape="circle") {{editingProject?'完成':'編輯'}}
 </template>
 <script>
+import swal from "sweetalert2";
 import {mapState, mapMutations} from 'vuex'
+
 export default {
   name: 'tasks-list',
   props: {
@@ -32,7 +34,8 @@ export default {
       newProjectName: '',
       editingProjectName: null,
       editingProjectNewName: '',
-      editingProject: false
+      editingProject: false,
+      firstTimeAddProject: true
     }
   },
   computed: {
@@ -43,6 +46,16 @@ export default {
   methods: {
     ...mapMutations(['addProject']),
     addProjects() {
+      if(this.firstTimeAddProject){
+        this.firstTimeAddProject = false
+        swal.fire({
+          icon: 'info',
+          title: '',
+          html: '新增的任務可以在<b>番茄鐘</b>及<b>討論版/筆記</b>中選取喔！',
+          confirmButtonText:
+              '確定',
+        })
+      }
       const projectName = this.newProjectName
       const newProject = {
         name: projectName,
@@ -52,14 +65,14 @@ export default {
       this.newProjectName = ''
     },
     setEditingProjects(project) {
-      if(this.editingProjectName){
+      if (this.editingProjectName) {
         this.commitEdit()
       }
       this.editingProjectName = project.name
       this.editingProjectNewName = project.name
     },
     commitEdit() {
-      if(this.editingProjectName !== this.editingProjectNewName){
+      if (this.editingProjectName !== this.editingProjectNewName) {
         const newProjects = {...this.projects}
         newProjects[this.editingProjectNewName] = newProjects[this.editingProjectName]
         newProjects[this.editingProjectNewName].name = this.editingProjectNewName
@@ -68,7 +81,7 @@ export default {
       }
       this.editingProjectName = null
     },
-    deleteProject(project){
+    deleteProject(project) {
       const newProjects = {...this.projects}
       delete newProjects[project.name]
       this.$emit('update:projects', newProjects)
