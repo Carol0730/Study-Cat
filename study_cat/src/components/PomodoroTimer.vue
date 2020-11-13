@@ -94,7 +94,7 @@ export default {
             swal.fire({
               icon: '',
               title: '',
-              text: '這裡搜集的番茄會顯示在目標列表中～',
+                text: '這裡搜集的番茄會顯示在任務列表中～',
               confirmButtonText:
                   '確定',
             })

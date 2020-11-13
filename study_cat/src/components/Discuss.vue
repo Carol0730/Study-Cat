@@ -15,10 +15,9 @@
           span.ml-1 問題
 
         a-divider(type="vertical")
-        a(@click="browsingDiscussStatus='unsolved'") 待解決
+        a(@click="switchDiscussStatus('unsolved')") 待解決
         a-divider(type="vertical")
-        a(@click="browsingDiscussStatus='solved'") 已解決
-
+        a(@click="switchDiscussStatus('solved')") 已解決
       a-card(v-for="discuss in discusses" :key="discuss.content + discuss.author").w-100.p-3.mt-2.text-left
         div.d-flex.align.w-100(align="start" style="width: 100%")
           a-space.text-center(direction="vertical")
@@ -56,6 +55,7 @@
 
 </template>
 <script>
+import swal from 'sweetalert2'
 export default {
   name: 'discuss',
   props: {
@@ -68,6 +68,7 @@ export default {
       sendingComment:'',
       browsingSubject: '無任務',
       browsingDiscussStatus: 'all',
+      hintsStatus:false,
       subjectDiscuss: {
         '無任務': [
           {
@@ -127,6 +128,25 @@ export default {
     switchProject({key}){
       this.browsingSubject = key
     },
+    switchDiscussStatus(statusName){
+      this.browsingDiscussStatus = statusName
+      if(statusName == '已解決' && !(this.hintsStatus) ){
+        swal.fire({
+          title: '',
+          icon: '',
+          html:
+              '確認解決這題問題了嗎？',
+          showCloseButton: true,
+          showCancelButton: true,
+          focusConfirm: false,
+          confirmButtonText:
+              '確定',
+          cancelButtonText:
+              '取消',
+        })
+        this.hintsStatus = true
+      }
+    }
   }
 }
 </script>
