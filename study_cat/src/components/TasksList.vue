@@ -6,19 +6,19 @@
           p.m-0.pl-2.text-left(v-if="editingProjectName!==item.name") {{item.name}}
           input.input1.w-100(v-else v-model="editingProjectNewName" @keyup.enter="commitEdit")
         div.ml-2(v-if="editingProjectName!==item.name")
-          span(v-if="!editingProject").containerTomatoNum
-            span.pTomato {{item.pomodoro}}
+          span.d-flex(v-if="!editingProject").containerTomatoNum
+            span.font-weight-bold.pTomato {{item.pomodoro}}
             img(src="@/assets/little tomato.png" width="30" height="30")
           div(v-else)
-            button.buttonEdit(@click="setEditingProjects(item)") 修改
-            button.buttonDelete(@click="deleteProject(item)") 刪除
+            button.font-weight-bold.buttonEdit(@click="setEditingProjects(item)") 修改
+            button.font-weight-bold.buttonDelete(@click="deleteProject(item)") 刪除
         div(v-else)
-          button.buttonEdit(@click="commitEdit") 完成
+          button.font-weight-bold.buttonEdit(@click="commitEdit") 完成
 
       div.d-flex.align-items-center
         input.input.flex-grow-1(v-model="newProjectName" placeholder="想新增什麼科目呢？" @keyup.enter="addProjects")
-        button.buttonAdd(@click="addProjects" icon="plus" shape="circle") ＋
-        button.buttonAdd(@click="editingProject=!editingProject" icon="plus" shape="circle") {{editingProject?'完成':'編輯'}}
+        button.font-weight-bold.buttonAdd(@click="addProjects" icon="plus" shape="circle") ＋
+        button.font-weight-bold.buttonAdd(@click="editingProject=!editingProject" icon="plus" shape="circle") {{editingProject?'完成':'編輯'}}
 </template>
 <script>
 import swal from "sweetalert2";
@@ -113,9 +113,10 @@ export default {
   width: 50px;
   height: 30px;
   border-radius: 10px;
-  color:#AB9872;
+  color:#76643E;
   /*border: #8B6C2A;*/
-  padding: 5px;
+  padding-top: 3px;
+  padding-bottom: 5px;
   margin: 2px 4px;
   text-align: center;
   text-decoration: none;
