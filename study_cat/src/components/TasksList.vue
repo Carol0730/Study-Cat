@@ -114,6 +114,7 @@ export default {
 }
 .input1 {
   /*width: 40%;*/
+  color:#76643E;
   height: 15px;
   padding: 16px 14px;
   margin: 8px 0;
