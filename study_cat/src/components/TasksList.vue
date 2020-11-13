@@ -18,7 +18,7 @@
         input.input.flex-grow-1(v-model="newProjectName" placeholder="想新增什麼科目呢？" @keyup.enter="addProjects")
         button.buttonAdd(@click="addProjects" icon="plus" shape="circle") ＋
 
-      button(id="demo2" @click="showAlert")
+
 </template>
 <script>
 import swal from "sweetalert2";
@@ -33,24 +33,26 @@ export default {
     return {
       newProjectName: '',
       editingProjectName: null,
-      editingProjectNewName: ''
+      editingProjectNewName: '',
+      firstTimeAddProject: true
     }
   },
   methods: {
     addProjects() {
+      if(this.firstTimeAddProject){
+        this.firstTimeAddProject = false
+        swal.fire({
+          icon: '',
+          title: '',
+          html: '這裏新增的任務可以在<b>番茄鐘</b>、<b>討論版</b>以及<b>筆記</b>中選取喔！',
+          confirmButtonText:
+              '確定',
+        })
+      }
       const projectName = this.newProjectName
       const newProject = {
         name: projectName,
         pomodoro: 0,
-      }
-      if(newProject[this.newProjectName] === 1){
-        swal.fire({
-          icon: '',
-          title: '',
-          text: '這裡搜集的番茄會顯示在任務列表中～',
-          confirmButtonText:
-              '確定',
-        })
       }
       this.$emit('update:projects', {...(this.projects), [projectName]: newProject})
       this.newProjectName = ''
@@ -81,7 +83,7 @@ export default {
       swal.fire({
         icon: '',
         title: '',
-        text: '這裡搜集的番茄會顯示在目標列表中～',
+        text: '這裏新增的任務可以在番茄鐘、討論版以及筆記中選取喔！',
         confirmButtonText:
             '確定',
       })
