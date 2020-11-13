@@ -1,26 +1,33 @@
 <template lang="pug">
   div
+    //a 計時任務：
     a-dropdown.w-50.p-3
       a.ant-dropdown-link {{currentProject}}
         a-icon(type="down")
       a-menu(slot="overlay")
         a-menu-item(v-for="p in Object.values(projects)" :key="p.name" :value="p.name" @click="switchProject") {{p.name}}
+    br
     p
       img(src="@/assets/Group 29.png" width="300" height="300")
       .tomato-container
-        .p1 {{timerRunning ? Math.floor(timeLeft / 60) : workMinutes}} : {{(timerRunning?(timeLeft % 60).toString().padStart(2, '0'):'00')}}
-        p(style="opacity:0") haha
+        .p1
+          span
+            p(style="font-size:100px;display:inline").font-weight-bold {{timerRunning ? Math.floor(timeLeft / 60) : workMinutes}}
+            p(style="font-size:32px;display:inline") {{(timerRunning?(timeLeft % 60).toString().padStart(2, '0'):'00')}}
+        p(style="opacity:0" ) haha
         //haha 不準刪
-        .p2 {{totalPomodoro}}
-    div(v-show="editingTime")
-      a-slider(v-model="workMinutes" :max="60" :min="1")
-    p
+        .p2.font-weight-bold {{totalPomodoro}}
+      a-space
+        img(v-for="index in perCycle" :key="index" :style="{opacity: (index >= cyclePassed ? 0.2:1)}" src="@/assets/Group 24.png" width="36")
+        //img(v-for="index in perCycle-cyclePassed" :key="index" src="@/assets/Group 24.png" width="30" )
+
+    a-space(v-if="editingTime")
+      a-slider(v-model="workMinutes" :max="60" :min="1" style="width: 300px;")
+    p(v-if="editingTime")
       .buttonStart(@click="switchTimer") {{timerRunning ? '放棄' : '開始！'}}
-    div
+    div(v-if="!timerRunning")
       .button(@click="editingTime = !editingTime") {{editingTime ? '調整完成':'調整時間'}}
       .button(@click="submitt") 儲存
-      //.button(@click="section='setting_time'") 設定
-      //setting_time(:projects.sync="projects" v-show="section==='setting_time'")
 </template>
 <script>
 
@@ -35,10 +42,11 @@ export default {
       timeLeft: 3,
       timerRunning: false,
       timer: null,
-      currentProject: '無任務',
+      currentProject: '日常瑣事',
       editingTime: false,
-      workMinutes: 25,
+      workMinutes: 1,
       cyclePassed: 0,
+      perCycle: 4
     }
   },
   computed: {
@@ -66,6 +74,7 @@ export default {
             this.timerRunning = !(this.timerRunning)
             const newProjects = {...this.projects}
             newProjects[this.currentProject].pomodoro += 1
+            this.cyclePassed += 1
             this.$emit('update:projects', newProjects)
           }
         }, 1000)
@@ -106,5 +115,7 @@ export default {
 }
 </script>
 <style>
-
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
 </style>
