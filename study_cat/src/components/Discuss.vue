@@ -22,7 +22,7 @@
           a-space.text-center(direction="vertical")
             a-avatar
             span {{discuss.author}}
-            button.btn-solved(v-show="discuss.author === user.name" @click="discuss.status = discuss.status==='solved'? 'unsolved':'solved'") {{discuss.status==='solved'? '未解決':'已解決'}}
+            button.btn-solved(v-show="discuss.author === user.name" @click="showAlert(discuss)") {{discuss.status==='solved'? '已解決':'未解決'}}
           div.ml-2(style="width: calc(100% - 50px)")
             //span {{{unsolved:'待解決', solved:'已解決'}[discuss.status]}}
             a-card.box.w-100 {{discuss.content}}
@@ -49,7 +49,7 @@
         a-textarea( v-model="sendingDiscussContent" placeholder="縮縮你的問題..." :autoSize="true")
         button.sendQ(type="link" @click="addDiscuss") 送出問題
           a-icon(type="enter")
-      button(id="demo3" @click="showAlert")
+      //button(id="demo3" @click="showAlert")
 
 
 
@@ -167,20 +167,24 @@ export default {
           // this.hintsStatus = true
         }
       },
-      showAlert() {
-        swal.fire({
-          icon: 'question',
-          title: '',
-          html:
-              '確認解決這題問題了嗎？',
-          showCloseButton: true,
-          showCancelButton: true,
-          focusConfirm: false,
-          confirmButtonText:
-              '確定',
-          cancelButtonText:
-              '取消',
-        })
+    showAlert(discuss) {
+      swal.fire({
+        icon: 'question',
+        title: '',
+        html:
+            '確認解決這題問題了嗎？',
+        showCloseButton: true,
+        showCancelButton: true,
+        focusConfirm: false,
+        confirmButtonText:
+            '確定',
+        cancelButtonText:
+            '取消',
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          discuss.status = 'solved'
+        }
+      })
       }
     },
 }
