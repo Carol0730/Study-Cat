@@ -23,7 +23,7 @@ Vue.use(Antd);
 
 Vue.config.productionTip = false;
 
-var pomodoroDoneAudio = new Audio(require('@/assets/done_sound.mp3'))
+var pomodoroDoneAudio = new Audio(require('@/assets/work_done.mp3'))
 var restDoneAudio = new Audio(require('@/assets/rest_done_sound.mp3'))
 // 4. 创建和挂载根实例。
 // 记得要通过 router 配置参数注入路由，
@@ -68,6 +68,7 @@ const store = new Vuex.Store({
         onPomoDone(state) {
             state.pomoSession.timerBegun = null
             state.pomoSession.cyclePassed += 1
+            state.pomoSession.cyclePassed %= state.pomoSession.perCycle * 2
             console.log("Stop Timer")
             if (state.pomoSession.cyclePassed % 2 == 0) {
                 restDoneAudio.play()
