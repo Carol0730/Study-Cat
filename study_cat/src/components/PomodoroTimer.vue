@@ -13,7 +13,7 @@
       .tomato-container
         .p1
           span()
-            p(@click="setPomoSess({workMinutes: 1/60})" style="font-size:100px;display:inline").font-weight-bold
+            p(@click="setPomoSess({workMinutes: 3/60, restMinutes: 3/60})" style="font-size:100px;display:inline").font-weight-bold
               | {{Math.floor(currentTimerSecondsLeft / 60)}}
             p(style="font-size:32px;display:inline")
               | {{(currentTimerSecondsLeft % 60).toString().padStart(2, '0')}}
@@ -130,31 +130,9 @@ export default {
       this.setPomoSess({currentProject: key})
     },
     submitt() {
-      const data = {
-        userr: this.user.name,
-        studytime: this.workMinutes,
-        relaxtime: this.relax_time,
-        subject: this.projects
-        //User
-        //學習時間
-        //休息時間
-        //科目
-        //對應番茄顆數
-      }
-      console.log(JSON.stringify(data))
+      const postData = {'entry.1990721791': '無名氏', 'entry.880743640': JSON.stringify(this.projects)};
       axios.post('https://cors-anywhere.herokuapp.com/https://docs.google.com/forms/d/e/1FAIpQLSccetvzM7NpL1rEBqHUEikTrvo9jDcFRlrdICze5g8tQy7yUg/formResponse',
-          {'entry.1990721791': 'id', 'entry.880743640': 'obj'})
-      // fetch('https://cors-anywhere.herokuapp.com/https://docs.google.com/forms/d/e/1FAIpQLSccetvzM7NpL1rEBqHUEikTrvo9jDcFRlrdICze5g8tQy7yUg/formResponse',
-      //     {
-      //       method: "POST",
-      //       body: {'entry.1990721791':'id','entry.880743640':'obj'},
-      //       headers: new Headers({
-      //         'Content-Type': 'application/json',
-      //         'Accept': 'application/json'
-      //       })
-      //     }).then(res => res.json())
-      //     .catch(error => console.error('Error: ', error))
-      //     .then(response => console.log('Success: ', response))
+          postData)
     }
   },
   mounted() {
