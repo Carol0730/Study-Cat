@@ -18,7 +18,7 @@
       div.d-flex.align-items-center
         input.input.flex-grow-1(v-model="newProjectName" placeholder="想新增什麼科目呢？" @keyup.enter="addProjects")
         button.font-weight-bold.buttonAdd(@click="addProjects" icon="plus" shape="circle") ＋
-        button.font-weight-bold.buttonAdd(@click="editingProject=!editingProject" icon="plus" shape="circle") {{editingProject?'完成':'編輯'}}
+        button.w-10.font-weight-bold.buttonAdd(@click="editingProject=!editingProject" icon="plus" shape="circle") {{editingProject?'完成':'編輯'}}
 </template>
 <script>
 import swal from "sweetalert2";
