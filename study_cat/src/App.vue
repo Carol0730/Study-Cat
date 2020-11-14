@@ -10,7 +10,6 @@
     router-view(:key="$route.fullPath" :projects.sync="projects" :user="user")
 
     div.d-flex.flex-column.fab-buttons
-      a-button(type="circle" icon="global" size="large").mb-2.fab-btn
       a-button(type="circle" icon="setting" size="large" @click="showSetting=true").fab-btn
 
     a-modal(title="設定"
