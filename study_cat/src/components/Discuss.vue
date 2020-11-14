@@ -22,7 +22,8 @@
           a-space.text-center(direction="vertical")
             a-avatar
             span {{discuss.author}}
-            button.btn-solved(v-show="discuss.author === user.name" @click="showAlert(discuss)") {{discuss.status==='solved'? '已解決':'未解決'}}
+            button.btn-solved(v-if="discuss.type==='問題'" v-show="discuss.author === user.name" @click="showAlert(discuss)") {{discuss.status==='solved'? '已解決':'未解決'}}
+            button.btn-solved(v-else) 筆記
           div.ml-2(style="width: calc(100% - 50px)")
             //span {{{unsolved:'待解決', solved:'已解決'}[discuss.status]}}
             a-card.box.w-100 {{discuss.content}}

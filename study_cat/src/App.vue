@@ -9,7 +9,10 @@
     a-divider
     router-view(:key="$route.fullPath" :projects.sync="projects" :user="user")
 
+    //a-button(:href="loginURL" type="link") Line 登入
+
     div.d-flex.flex-column.fab-buttons
+      //a-button(type="circle" icon="global" size="large").mb-2.fab-btn
       a-button(type="circle" icon="setting" size="large" @click="showSetting=true").fab-btn
 
     a-modal(title="設定"
@@ -27,6 +30,17 @@ import PomodoroTimer from "./components/PomodoroTimer";
 import TasksList from "./components/TasksList";
 import Discuss from "@/components/Discuss";
 
+import axios from 'axios'
+import oauth from 'axios-oauth-client'
+
+const tokenConfig = {
+  url: 'https://api.line.me/oauth2/v2.1/token',
+  grant_type: 'authorization_code',
+  client_id: '1655016607',
+  client_secret: '9a2ae7335f215fc00dac198546b2a25e',
+  redirect_uri: 'http://localhost:8080',
+  scope: 'baz',
+}
 export default {
   name: 'App',
   components: {Discuss, TasksList, PomodoroTimer},
@@ -37,10 +51,41 @@ export default {
       user: {
         name: '無名氏'
       },
-      showSetting: false
+      showSetting: false,
+      loginURL: "https://access.line.me/oauth2/v2.1/authorize" +
+          "?response_type=code&client_id=1655016607&state=123&scope=profile%20openid&redirect_uri=http://localhost:8080"
+
     }
   },
-  methods:{
+  async mounted() {
+
+    if (this.code !== null) {
+      tokenConfig.code = this.code
+      const getAuthorizationCode = oauth.client(axios.create(), tokenConfig)
+      this.user.token = await getAuthorizationCode()
+
+      const token = this.user.token.access_token
+
+      const getProfileOptions = {
+        method: 'GET',
+        headers: {Authorization: `Bearer ${token}`},
+        url: 'https://api.line.me/v2/profile'
+      }
+
+      const profileResp = await axios(getProfileOptions)
+      console.log(profileResp.data)
+      this.$message.success(`你已登入為 ${profileResp.data.displayName}`)
+      this.user = {...(this.user), ...(profileResp.data)}
+
+    }
+  },
+  computed: {
+    link() {
+      return new URLSearchParams(window.location.search)
+    },
+    code() {
+      return this.link.get('code')
+    },
   }
 }
 </script>
